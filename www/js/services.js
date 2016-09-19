@@ -22,4 +22,19 @@ angular.module('starter.services', [])
       return friends[friendId];
     }
   }
-});
+})
+
+.factory('Maps',  function(){
+
+  var locations = undefined;
+    return {
+      getLocation: function (){
+        return locations;
+      },
+      setLocation: function (loc){
+        locations = loc;
+      },
+
+  }
+
+})

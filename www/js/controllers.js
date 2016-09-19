@@ -14,10 +14,11 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $state, $location, $http, $window) {
+.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps) {
 
 		$scope.map;
 		$scope.infowindow;
+		$scope.location = Maps.getLocation();
 
 		// Cover shift page
 		$scope.cover = function() {
@@ -31,6 +32,7 @@ angular.module('starter.controllers', [])
 
 		var onSuccess = function(position) {
 				console.log(position.coords.latitude, position.coords.longitude)
+				Maps.setLocation({lat: position.coords.latitude, lng:position.coords.longitude})
 				var mapOptions = {
 						center: {
 								lat: position.coords.latitude,
@@ -52,7 +54,8 @@ angular.module('starter.controllers', [])
 				// 		radius: 5000,
 				// 		name: ['starbucks']
 				// }, callback);
-				console.log($location.url(),"url")
+
+				// If at pickup page initiate api call to server to get stores
 				if($location.url() === '/app/tab/pickup'){
 					$http({
 						method: 'GET',
@@ -76,24 +79,54 @@ angular.module('starter.controllers', [])
 			}
 		}
 
-		// get geolocation of the device
-		navigator.geolocation.getCurrentPosition(onSuccess,
-				onError, {
+		// Location is not set yet? => find location
+		if($scope.location === undefined){
+			console.log('getting location for the first time')
+			// get geolocation of the device
+			navigator.geolocation.getCurrentPosition(onSuccess,
+					onError, {
 						maximumAge: 3000,
 						timeout: 10000,
 						enableHighAccuracy: true
-				});
+			});
+		// Create a map with existing location
+		}else{
+			console.log('using existing location from scope')
+			var mapOptions = {
+						center: {
+								lat: $scope.location.lat,
+								lng: $scope.location.lng
+						},
+						zoom: 15,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				// Create new google map obj and hook it up to the html element
+				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+				$scope.infowindow = new google.maps.InfoWindow();
+
+				// If at pickup page initiate api call to server to get stores
+				if($location.url() === '/app/tab/pickup'){
+					$http({
+						method: 'GET',
+						url: 'http://localhost:4000/shifts/lat/'+$scope.location.lat+'/lng/'+$scope.location.lng+'/rad/5000'
+						}).then(function successCallback(response) {
+							console.log("got response", response.data)
+						  callback(response.data)
+						}, function errorCallback(response) {
+							alert("Could not get stores from the server, please try again later")
+						});
+				}
+		}
 
 		//add meaningfuller name
 		function callback(results, status) {
-				// if (status === google.maps.places.PlacesServiceStatus.OK) {
+				// if (status === google.maps.places.PlacesServiceStatus.OK) { // TODO
 						for (var i = 0; i < results.results.length; i++) {
 								console.log(results.results[i])
 								createMarker(results.results[i]);
 						}
 				// }
 		}
-
 
 		function createMarker(place) {
 				var loc = place.geometry.location;
