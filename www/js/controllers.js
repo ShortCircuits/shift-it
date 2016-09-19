@@ -14,7 +14,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $state, $location) {
+.controller('MapCtrl', function($scope, $state, $location, $http, $window) {
 
 		$scope.map;
 		$scope.infowindow;
@@ -36,21 +36,33 @@ angular.module('starter.controllers', [])
 				// Create new google map obj and hook it up to the html element
 				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 				$scope.infowindow = new google.maps.InfoWindow();
-				var service = new google.maps.places.PlacesService($scope.map);
+				// var service = new google.maps.places.PlacesService($scope.map);
 
-				service.nearbySearch({
-						location: {
-								lat: position.coords.latitude,
-								lng: position.coords.longitude
-						},
-						radius: 5000,
-						name: ['starbucks']
-				}, callback);
-		}
+				// service.nearbySearch({
+				// 		location: {
+				// 				lat: position.coords.latitude,
+				// 				lng: position.coords.longitude
+				// 		},
+				// 		radius: 5000,
+				// 		name: ['starbucks']
+				// }, callback);
+
+				// shifts/lat/30.27809839999999/lng/-97.74443280000003/rad/500
+				$http({
+					method: 'GET',
+					url: 'http://localhost:4000/shifts/lat/'+position.coords.latitude+'/lng/'+position.coords.longitude+'/rad/5000'
+					}).then(function successCallback(response) {
+						console.log("got response", response.data)
+					  callback(response.data)
+					}, function errorCallback(response) {
+						alert("Could not get stores from the server, please try again later")
+					});
+				}
 
 		var onError = function(error) {
 			if(error.code === 3){
-				alert("having trouble using your geolocation. Please refresh the page")
+				alert("Sorry, we are having trouble using your geolocation. Try refreshing the page to fix the problem");
+				$window.location.href = '#/'+$location.url()	;
 			}else{
 				alert('code: ' + error.code + '\n' +
 						'message: ' + error.message + '\n');
@@ -67,20 +79,21 @@ angular.module('starter.controllers', [])
 
 		//add meaningfuller name
 		function callback(results, status) {
-				if (status === google.maps.places.PlacesServiceStatus.OK) {
-						for (var i = 0; i < results.length; i++) {
-								console.log(results[i])
-								createMarker(results[i]);
+				// if (status === google.maps.places.PlacesServiceStatus.OK) {
+						for (var i = 0; i < results.results.length; i++) {
+								console.log(results.results[i])
+								createMarker(results.results[i]);
 						}
-				}
+				// }
 		}
+
 
 		function createMarker(place) {
 				var loc = place.geometry.location;
 				var marker = new google.maps.Marker({
 						position: {
-								lat: loc.lat(),
-								lng: loc.lng()
+								lat: place.geometry.location.lat,
+								lng: place.geometry.location.lng
 						},
 						animation: google.maps.Animation.DROP
 				});
