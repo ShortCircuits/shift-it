@@ -1,0 +1,46 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Edit Profile</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeEditProfile()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+
+    <form ng-submit="">
+      <div class="list">
+
+        <label class="item item-input">
+          <span class="input-label">Name</span>
+          <input type="text" name="name" ng-model="profileData.name">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Email</span>
+          <input type="email" name="email" ng-model="profileData.email">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Phone</span>
+          <input type="tel" name="phone" ng-model="profileData.phone">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Main Shop</span>
+          <input type="text" name="mainshop" ng-model="profileData.mainshop">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Secondary Shops</span>
+          <input type="text" name="secondary" ng-model="profileData.secondary">
+        </label>
+
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Save Changes</button>
+        </label>
+
+      </div>
+    </form>
+
+  </ion-content>
+</ion-modal-view>
