@@ -106,6 +106,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  
+  .state('app.tab.pickup', {
+    url: '/pickup',
+    views: {
+      'tab-map': {
+        templateUrl: 'templates/pickup.html',
+        controller: 'MapCtrl'
+      }
+    }
+  })
 
   .state('app.tab.account', {
     url: '/account',

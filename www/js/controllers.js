@@ -19,8 +19,14 @@ angular.module('starter.controllers', [])
 		$scope.map;
 		$scope.infowindow;
 
+		// Cover shift page
 		$scope.cover = function() {
 				$location = "app.tab.friends"
+		};
+
+		// Pickup a shift page
+		$scope.pickup = function() {
+				$location = "app.tab.pickup"
 		};
 
 		var onSuccess = function(position) {
@@ -46,17 +52,18 @@ angular.module('starter.controllers', [])
 				// 		radius: 5000,
 				// 		name: ['starbucks']
 				// }, callback);
-
-				// shifts/lat/30.27809839999999/lng/-97.74443280000003/rad/500
-				$http({
-					method: 'GET',
-					url: 'http://localhost:4000/shifts/lat/'+position.coords.latitude+'/lng/'+position.coords.longitude+'/rad/5000'
-					}).then(function successCallback(response) {
-						console.log("got response", response.data)
-					  callback(response.data)
-					}, function errorCallback(response) {
-						alert("Could not get stores from the server, please try again later")
-					});
+				console.log($location.url(),"url")
+				if($location.url() === '/app/tab/pickup'){
+					$http({
+						method: 'GET',
+						url: 'http://localhost:4000/shifts/lat/'+position.coords.latitude+'/lng/'+position.coords.longitude+'/rad/5000'
+						}).then(function successCallback(response) {
+							console.log("got response", response.data)
+						  callback(response.data)
+						}, function errorCallback(response) {
+							alert("Could not get stores from the server, please try again later")
+						});
+					}
 				}
 
 		var onError = function(error) {
@@ -73,7 +80,7 @@ angular.module('starter.controllers', [])
 		navigator.geolocation.getCurrentPosition(onSuccess,
 				onError, {
 						maximumAge: 3000,
-						timeout: 5000,
+						timeout: 10000,
 						enableHighAccuracy: true
 				});
 
