@@ -41,12 +41,9 @@ angular.module('starter.services', [])
       setMap: function(mapObj){
         map = mapObj;
       }
-
-  }
+    }
 
 })
-})
-
 
 .factory('Profile', function() {
 
