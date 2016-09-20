@@ -45,3 +45,41 @@ angular.module('starter.services', [])
   }
 
 })
+})
+
+
+.factory('Profile', function() {
+
+  // profile data
+  var profileInfo = {
+    "name": 'Oscar',
+    "phone": '',
+    "email": '',
+    "mainshop": '',
+    "secondaryShop": ''
+  };
+
+  return {
+    all: function() {
+      return profileInfo;
+    },
+    get: function() {
+      return profileInfo;
+    },
+    set: function(profileData) {
+      profileInfo.name          = profileData.name
+      profileInfo.phone         = profileData.phone
+      profileInfo.email         = profileData.email
+      profileInfo.mainshop      = profileData.mainshop
+      profileInfo.secondaryShop = profileData.secondaryShop
+    },
+    retrieveProfile: function() {
+      console.log("retrieveProfileData: ", profileData);
+      profileInfo = profileData;
+      console.log("profileInfo: ", profileInfo);
+    }
+  }
+
+});
+
+

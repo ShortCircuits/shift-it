@@ -249,15 +249,15 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ProfileCtrl', function($scope, $ionicModal) {
+.controller('ProfileCtrl', function($scope, $ionicModal, Profile) {
 
 		// Form data for the login modal
 		$scope.profileData = {
-				"name": "Alice Bobinsky",
-				"email": "alice@gmail.com",
-				"phone": "(512) 123-4567",
-				"mainshop": "nearest",
-				"secondary": "some other"
+				// "name": "Alice Bobinsky",
+				// "email": "alice@gmail.com",
+				// "phone": "(512) 123-4567",
+				// "mainshop": "nearest",
+				// "secondary": "some other"
 		};
 
 		// Create the login modal that we will use later
@@ -276,4 +276,15 @@ angular.module('starter.controllers', [])
 		$scope.openEditProfile = function() {
 				$scope.modal.show();
 		};
+
+		// Submit function
+		$scope.submitProfile = function() {
+			//console.log("clicked");
+			Profile.retrieveProfile($scope.profileData);
+		};
+
 })
+
+
+
+
