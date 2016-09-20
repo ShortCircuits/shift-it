@@ -18,6 +18,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    if (window.plugin) {
+      map = window.plugin.google.maps.Map;//.getMap(div);
+    }
   });
 })
 
