@@ -21,6 +21,12 @@
     text-align: center;
 }
 
+#loading {
+  padding:20px;
+  background-color: white;
+  opacity: 0.9;
+}
+
 .bar.bar-stable {
 	background-color: #00592D;
 	box-shadow: 0px 1px 2px #888888;
