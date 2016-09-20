@@ -14,17 +14,48 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $state, $location, $http, $window) {
+.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout) {
 
 		$scope.map;
 		$scope.infowindow;
+		$scope.location = Maps.getLocation();
 
+		document.getElementById("pickupshift").style.display = 'none';
+		document.getElementById("covermyshift").style.display = 'none';
+
+		$timeout(function(){
+			document.getElementById("pickupshift").style.display = 'block';
+			document.getElementById("covermyshift").style.display = 'block';
+			document.getElementById("loading").style.display = 'none';
+		},6000)
+
+
+		// Cover shift page
 		$scope.cover = function() {
 				$location = "app.tab.friends"
 		};
 
+		// Pickup a shift page
+		$scope.pickup = function() {
+				// $location = "app.tab.pickup"
+				document.getElementById("pickupshift").style.display = 'none';
+				document.getElementById("covermyshift").style.display = 'none';
+				$http({
+						method: 'GET',
+						url: 'http://localhost:4000/shifts/lat/'+$scope.location.lat+'/lng/'+$scope.location.lng+'/rad/5000'
+						}).then(function successCallback(response) {
+							console.log("got response", response.data)
+						  callback(response.data)
+						}, function errorCallback(response) {
+							alert("Could not get stores from the server, please try again later")
+						});
+		};
+
 		var onSuccess = function(position) {
 				console.log(position.coords.latitude, position.coords.longitude)
+				//Use factory to store location
+				$scope.location = {lat: position.coords.latitude, lng:position.coords.longitude};
+				// Maps.setLocation({lat: position.coords.latitude, lng:position.coords.longitude})
 				var mapOptions = {
 						center: {
 								lat: position.coords.latitude,
@@ -34,8 +65,11 @@ angular.module('starter.controllers', [])
 						mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 				// Create new google map obj and hook it up to the html element
-				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions)
+				console.log("map obj", $scope.map)
 				$scope.infowindow = new google.maps.InfoWindow();
+				// Use factory to store the map
+				Maps.setMap($scope.map)
 				// var service = new google.maps.places.PlacesService($scope.map);
 
 				// service.nearbySearch({
@@ -47,16 +81,18 @@ angular.module('starter.controllers', [])
 				// 		name: ['starbucks']
 				// }, callback);
 
-				// shifts/lat/30.27809839999999/lng/-97.74443280000003/rad/500
-				$http({
-					method: 'GET',
-					url: 'http://localhost:4000/shifts/lat/'+position.coords.latitude+'/lng/'+position.coords.longitude+'/rad/5000'
-					}).then(function successCallback(response) {
-						console.log("got response", response.data)
-					  callback(response.data)
-					}, function errorCallback(response) {
-						alert("Could not get stores from the server, please try again later")
-					});
+				// If at pickup page initiate api call to server to get stores
+				if($location.url() === '/app/tab/pickup'){
+					$http({
+						method: 'GET',
+						url: 'http://localhost:4000/shifts/lat/'+position.coords.latitude+'/lng/'+position.coords.longitude+'/rad/5000'
+						}).then(function successCallback(response) {
+							console.log("got response", response.data)
+						  callback(response.data)
+						}, function errorCallback(response) {
+							alert("Could not get stores from the server, please try again later")
+						});
+					}
 				}
 
 		var onError = function(error) {
@@ -69,24 +105,60 @@ angular.module('starter.controllers', [])
 			}
 		}
 
-		// get geolocation of the device
-		navigator.geolocation.getCurrentPosition(onSuccess,
-				onError, {
+		// Location is not set yet? => find location
+		if($scope.location === undefined){
+			console.log('getting location for the first time')
+			// get geolocation of the device
+			navigator.geolocation.getCurrentPosition(onSuccess,
+					onError, {
 						maximumAge: 3000,
-						timeout: 5000,
+						timeout: 10000,
 						enableHighAccuracy: true
-				});
+			});
+		// Create a map with existing location
+		}else{
+			console.log('using existing location from scope')
+			var mapOptions = {
+						center: {
+								lat: $scope.location.lat,
+								lng: $scope.location.lng
+						},
+						zoom: 15,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				// Create new google map obj and hook it up to the html element
+				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+				// var mapsich = new google.maps.latlng()
+				// $scope.map.control.refresh({latitude: 32.779680, longitude: -79.935493})
+				// $scope.map.render();
+				// google.maps.event.trigger($scope.map, 'resize');
+				// $route.reload();
+				// Map.init()
+				$scope.infowindow = new google.maps.InfoWindow();
+
+				// If at pickup page initiate api call to server to get stores
+				if($location.url() === '/app/tab/pickup'){
+					$http({
+						method: 'GET',
+						url: 'http://localhost:4000/shifts/lat/'+$scope.location.lat+'/lng/'+$scope.location.lng+'/rad/5000'
+						}).then(function successCallback(response) {
+							console.log("got response", response.data)
+						  callback(response.data)
+						}, function errorCallback(response) {
+							alert("Could not get stores from the server, please try again later")
+						});
+				}
+		}
 
 		//add meaningfuller name
 		function callback(results, status) {
-				// if (status === google.maps.places.PlacesServiceStatus.OK) {
+				// if (status === google.maps.places.PlacesServiceStatus.OK) { // TODO
 						for (var i = 0; i < results.results.length; i++) {
 								console.log(results.results[i])
 								createMarker(results.results[i]);
 						}
 				// }
 		}
-
 
 		function createMarker(place) {
 				var loc = place.geometry.location;
@@ -111,9 +183,9 @@ angular.module('starter.controllers', [])
 								`<ul>
 									<li> ${place.name} <br />  ${place.vicinity} </li>
 									<li> Shifts available: </li>
-									<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
-										<strong> 09.23 => from 8am to 12pm </strong>
-										<span style="color:green">Prize: $20</span>
+									<li> <span style="font-size:9"> ${place.shifts[0].submitted_by} needs someone to cover a shift</span> <br/>
+										<strong> ${place.shifts[0].shift_start} to ${place.shifts[0].shift_end}</strong>
+										<span style="color:green">Prize: ${place.shifts[0].prize}</span>
 										<button> Take this shift</button>
 									</li>
 									<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
@@ -159,7 +231,6 @@ angular.module('starter.controllers', [])
 
 		// Perform the login action when the user submits the login form
 		$scope.doLogin = function() {
-				console.log('Doing login', $scope.loginData);
 
 				// Simulate a login delay. Remove this and replace with your login
 				// code if using a login system
