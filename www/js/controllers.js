@@ -250,7 +250,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ProfileCtrl', function($scope, $ionicModal) {
-
+	
+	$scope.$on('$ionicView.enter', function() {
+     // Code you want executed every time view is opened
+     console.log('Opened!')
+  })
 		// Form data for the login modal
 		$scope.profileData = {
 				"name": "Alice Bobinsky",

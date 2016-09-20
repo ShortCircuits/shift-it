@@ -1,6 +1,10 @@
 var express = require('express'),
     app = express();
 
+app.get('/', function (req, res) {
+	{ GOOGLE_API_KEY: process.env.GOOGLE_API_KEY }
+})
+
 app.use(express.static('www'));
 
 // CORS (Cross-Origin Resource Sharing) headers to support Cross-site HTTP requests
