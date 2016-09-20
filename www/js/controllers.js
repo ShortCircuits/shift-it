@@ -283,6 +283,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CalendarCtrl', function($scope, ionicDatePicker){
+	$scope.$on('$ionicView.enter', function() {
+	   // Code you want executed every time view is opened
+	   $scope.openDatePicker();
+	   console.log('Opened!')
+	})
 	var ipObj1 = {
       callback: function (val) {  //Mandatory
         console.log('Return value from the datepicker popup is : ' + val, new Date(val));
