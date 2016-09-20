@@ -183,9 +183,9 @@ angular.module('starter.controllers', [])
 								`<ul>
 									<li> ${place.name} <br />  ${place.vicinity} </li>
 									<li> Shifts available: </li>
-									<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
-										<strong> 09.23 => from 8am to 12pm </strong>
-										<span style="color:green">Prize: $20</span>
+									<li> <span style="font-size:9"> ${place.shifts[0].submitted_by} needs someone to cover a shift</span> <br/>
+										<strong> ${place.shifts[0].shift_start} to ${place.shifts[0].shift_end}</strong>
+										<span style="color:green">Prize: ${place.shifts[0].prize}</span>
 										<button> Take this shift</button>
 									</li>
 									<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
