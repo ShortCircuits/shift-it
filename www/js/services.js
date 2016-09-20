@@ -27,6 +27,7 @@ angular.module('starter.services', [])
 .factory('Maps',  function(){
 
   var locations = undefined;
+  var map = undefined;
     return {
       getLocation: function (){
         return locations;
@@ -34,6 +35,12 @@ angular.module('starter.services', [])
       setLocation: function (loc){
         locations = loc;
       },
+      getMap: function(){
+        return map;
+      },
+      setMap: function(mapObj){
+        map = mapObj;
+      }
 
   }
 

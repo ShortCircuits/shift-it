@@ -14,11 +14,21 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps) {
+.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout) {
 
 		$scope.map;
 		$scope.infowindow;
 		$scope.location = Maps.getLocation();
+
+		document.getElementById("pickupshift").style.display = 'none';
+		document.getElementById("covermyshift").style.display = 'none';
+
+		$timeout(function(){
+			document.getElementById("pickupshift").style.display = 'block';
+			document.getElementById("covermyshift").style.display = 'block';
+			document.getElementById("loading").style.display = 'none';
+		},6000)
+
 
 		// Cover shift page
 		$scope.cover = function() {
@@ -27,12 +37,25 @@ angular.module('starter.controllers', [])
 
 		// Pickup a shift page
 		$scope.pickup = function() {
-				$location = "app.tab.pickup"
+				// $location = "app.tab.pickup"
+				document.getElementById("pickupshift").style.display = 'none';
+				document.getElementById("covermyshift").style.display = 'none';
+				$http({
+						method: 'GET',
+						url: 'http://localhost:4000/shifts/lat/'+$scope.location.lat+'/lng/'+$scope.location.lng+'/rad/5000'
+						}).then(function successCallback(response) {
+							console.log("got response", response.data)
+						  callback(response.data)
+						}, function errorCallback(response) {
+							alert("Could not get stores from the server, please try again later")
+						});
 		};
 
 		var onSuccess = function(position) {
 				console.log(position.coords.latitude, position.coords.longitude)
-				Maps.setLocation({lat: position.coords.latitude, lng:position.coords.longitude})
+				//Use factory to store location
+				$scope.location = {lat: position.coords.latitude, lng:position.coords.longitude};
+				// Maps.setLocation({lat: position.coords.latitude, lng:position.coords.longitude})
 				var mapOptions = {
 						center: {
 								lat: position.coords.latitude,
@@ -42,8 +65,11 @@ angular.module('starter.controllers', [])
 						mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 				// Create new google map obj and hook it up to the html element
-				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions)
+				console.log("map obj", $scope.map)
 				$scope.infowindow = new google.maps.InfoWindow();
+				// Use factory to store the map
+				Maps.setMap($scope.map)
 				// var service = new google.maps.places.PlacesService($scope.map);
 
 				// service.nearbySearch({
@@ -102,6 +128,12 @@ angular.module('starter.controllers', [])
 				};
 				// Create new google map obj and hook it up to the html element
 				$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+				// var mapsich = new google.maps.latlng()
+				// $scope.map.control.refresh({latitude: 32.779680, longitude: -79.935493})
+				// $scope.map.render();
+				// google.maps.event.trigger($scope.map, 'resize');
+				// $route.reload();
+				// Map.init()
 				$scope.infowindow = new google.maps.InfoWindow();
 
 				// If at pickup page initiate api call to server to get stores
@@ -199,7 +231,6 @@ angular.module('starter.controllers', [])
 
 		// Perform the login action when the user submits the login form
 		$scope.doLogin = function() {
-				console.log('Doing login', $scope.loginData);
 
 				// Simulate a login delay. Remove this and replace with your login
 				// code if using a login system
