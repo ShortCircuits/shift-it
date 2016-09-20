@@ -42,7 +42,7 @@ angular.module('starter.controllers', [])
 				document.getElementById("covermyshift").style.display = 'none';
 				$http({
 						method: 'GET',
-						url: 'http://localhost:4000/shifts/lat/'+$scope.location.lat+'/lng/'+$scope.location.lng+'/rad/5000'
+						url: 'https://shift-it.herokuapp.com/shifts/lat/'+$scope.location.lat+'/lng/'+$scope.location.lng+'/rad/5000'
 						}).then(function successCallback(response) {
 							console.log("got response", response.data)
 						  callback(response.data)
@@ -162,41 +162,46 @@ angular.module('starter.controllers', [])
 
 		function createMarker(place) {
 				var loc = place.geometry.location;
-				var marker = new google.maps.Marker({
-						position: {
-								lat: place.geometry.location.lat,
-								lng: place.geometry.location.lng
-						},
-						animation: google.maps.Animation.DROP
-				});
 
-				marker.setMap($scope.map);
-				google.maps.event.addListener(marker, 'click', function() {
-						if (marker.getAnimation() !== null) {
-								marker.setAnimation(null);
-						} else {
-								marker.setAnimation(google.maps.Animation.BOUNCE);
-						}
+				// If shifts exist for this store
+				if(place.shifts){
 
-						// marker popup window
-						$scope.infowindow.setContent(
-								`<ul>
-									<li> ${place.name} <br />  ${place.vicinity} </li>
-									<li> Shifts available: </li>
-									<li> <span style="font-size:9"> ${place.shifts[0].submitted_by} needs someone to cover a shift</span> <br/>
-										<strong> ${place.shifts[0].shift_start} to ${place.shifts[0].shift_end}</strong>
-										<span style="color:green">Prize: ${place.shifts[0].prize}</span>
-										<button> Take this shift</button>
-									</li>
-									<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
-										<strong> 09.23 => from 8am to 12pm </strong>
-										<span style="color:green">Prize: $20</span>
-										<button> Take this shift</button>
-									</li>
-								</ul>`
-						);
-						$scope.infowindow.open($scope.map, this);
-				});
+					var marker = new google.maps.Marker({
+							position: {
+									lat: place.geometry.location.lat,
+									lng: place.geometry.location.lng
+							},
+							animation: google.maps.Animation.DROP
+					});
+
+					marker.setMap($scope.map);
+					google.maps.event.addListener(marker, 'click', function() {
+							if (marker.getAnimation() !== null) {
+									marker.setAnimation(null);
+							} else {
+									marker.setAnimation(google.maps.Animation.BOUNCE);
+							}
+
+							// marker popup window
+							$scope.infowindow.setContent(
+									`<ul>
+										<li> ${place.name} <br />  ${place.vicinity} </li>
+										<li> Shifts available: </li>
+										<li> <span style="font-size:9"> ${place.shifts[0].submitted_by} needs someone to cover a shift</span> <br/>
+											<strong> ${place.shifts[0].shift_start} to ${place.shifts[0].shift_end}</strong>
+											<span style="color:green">Prize: ${place.shifts[0].prize}</span>
+											<button> Take this shift</button>
+										</li>
+										<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
+											<strong> 09.23 => from 8am to 12pm </strong>
+											<span style="color:green">Prize: $20</span>
+											<button> Take this shift</button>
+										</li>
+									</ul>`
+							);
+							$scope.infowindow.open($scope.map, this);
+					});
+				}
 		}
 })
 
