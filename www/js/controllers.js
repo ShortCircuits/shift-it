@@ -180,20 +180,24 @@ angular.module('starter.controllers', [])
 
 						// marker popup window
 						$scope.infowindow.setContent(
-								`<ul>
-									<li> ${place.name} <br />  ${place.vicinity} </li>
-									<li> Shifts available: </li>
-									<li> <span style="font-size:9"> ${place.shifts[0].submitted_by} needs someone to cover a shift</span> <br/>
-										<strong> ${place.shifts[0].shift_start} to ${place.shifts[0].shift_end}</strong>
-										<span style="color:green">Prize: ${place.shifts[0].prize}</span>
-										<button> Take this shift</button>
-									</li>
-									<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
-										<strong> 09.23 => from 8am to 12pm </strong>
-										<span style="color:green">Prize: $20</span>
-										<button> Take this shift</button>
-									</li>
-								</ul>`
+
+							// back-ticks not working for testing suite
+							"<ul>\n<li> " + place.name + " <br />  " + place.vicinity + " </li>\n<li> Shifts available: </li>\n<li> <span style=\"font-size:9\"> " + place.shifts[0].submitted_by + " needs someone to cover a shift</span> <br/>\n<strong> " + place.shifts[0].shift_start + " to " + place.shifts[0].shift_end + "</strong>\n<span style=\"color:green\">Prize: " + place.shifts[0].prize + "</span>\n<button> Take this shift</button>\n</li>\n<li> <span style=\"font-size:9\">Mark needs someone to cover a shift</span> <br/>\n<strong> 09.23 => from 8am to 12pm </strong>\n<span style=\"color:green\">Prize: $20</span>\n<button> Take this shift</button>\n</li>\n</ul>"
+							
+							// `<ul>
+							// 	<li> ${place.name} <br />  ${place.vicinity} </li>
+							// 	<li> Shifts available: </li>
+							// 	<li> <span style="font-size:9"> ${place.shifts[0].submitted_by} needs someone to cover a shift</span> <br/>
+							// 		<strong> ${place.shifts[0].shift_start} to ${place.shifts[0].shift_end}</strong>
+							// 		<span style="color:green">Prize: ${place.shifts[0].prize}</span>
+							// 		<button> Take this shift</button>
+							// 	</li>
+							// 	<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
+							// 		<strong> 09.23 => from 8am to 12pm </strong>
+							// 		<span style="color:green">Prize: $20</span>
+							// 		<button> Take this shift</button>
+							// 	</li>
+							// </ul>`
 						);
 						$scope.infowindow.open($scope.map, this);
 				});
@@ -249,19 +253,15 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ProfileCtrl', function($scope, $ionicModal) {
-	
-	$scope.$on('$ionicView.enter', function() {
-     // Code you want executed every time view is opened
-     console.log('Opened!')
-  })
+.controller('ProfileCtrl', function($scope, $ionicModal, Profile) {
+
 		// Form data for the login modal
 		$scope.profileData = {
-				"name": "Alice Bobinsky",
-				"email": "alice@gmail.com",
-				"phone": "(512) 123-4567",
-				"mainshop": "nearest",
-				"secondary": "some other"
+				// "name": "Alice Bobinsky",
+				// "email": "alice@gmail.com",
+				// "phone": "(512) 123-4567",
+				// "mainshop": "nearest",
+				// "secondary": "some other"
 		};
 
 		// Create the login modal that we will use later
@@ -281,3 +281,67 @@ angular.module('starter.controllers', [])
 				$scope.modal.show();
 		};
 })
+
+.controller('CalendarCtrl', function($scope, ionicDatePicker){
+	$scope.$on('$ionicView.enter', function() {
+	   // Code you want executed every time view is opened
+	   $scope.openDatePicker();
+	   console.log('Opened!')
+	})
+	var ipObj1 = {
+      callback: function (val) {  //Mandatory
+        console.log('Return value from the datepicker popup is : ' + val, new Date(val));
+      },
+      disabledDates: [            //Optional
+        new Date(2016, 2, 16),
+        new Date(2015, 3, 16),
+        new Date(2015, 4, 16),
+        new Date(2015, 5, 16),
+        new Date('Wednesday, August 12, 2015'),
+        new Date("08-16-2016"),
+        new Date(1439676000000)
+      ],
+      from: new Date(2012, 1, 1), //Optional
+      to: new Date(2016, 10, 30), //Optional
+      inputDate: new Date(),      //Optional
+      mondayFirst: true,          //Optional
+      disableWeekdays: [0],       //Optional
+      closeOnSelect: false,       //Optional
+      templateType: 'popup'       //Optional
+    };
+
+    $scope.openDatePicker = function(){
+      ionicDatePicker.openDatePicker(ipObj1);
+    };
+})
+
+.controller('TimepickerCtrl', function ($scope, ionicTimePicker) {
+
+  var ipObj1 = {
+    callback: function (val) {      //Mandatory
+      if (typeof (val) === 'undefined') {
+        console.log('Time not selected');
+      } else {
+        var selectedTime = new Date(val * 1000);
+        console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
+      }
+    },
+    inputTime: 50400,   //Optional
+    format: 12,         //Optional
+    step: 15,           //Optional
+    setLabel: 'Set2'    //Optional
+  };
+
+  // ionicTimePicker.openTimePicker(ipObj1);
+  $scope.openTimePicker = function(){
+    ionicTimePicker.openTimePicker(ipObj1);
+  };
+});
+
+
+
+
+
+
+
+

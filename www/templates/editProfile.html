@@ -22,7 +22,7 @@
 
         <label class="item item-input">
           <span class="input-label">Phone</span>
-          <input type="tel" name="phone" ng-model="profileData.phone">
+          <input type="tel" pattern="\d{3}[\-]\d{3}[\-]\d{4}" name="phone" ng-model="profileData.phone">
         </label>
 
         <label class="item item-input">
@@ -36,7 +36,7 @@
         </label>
 
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Save Changes</button>
+          <button class="button button-block button-positive" type="submit" ng-click="submitProfile()">Save Changes</button>
         </label>
 
       </div>
