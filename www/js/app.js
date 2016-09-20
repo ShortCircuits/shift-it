@@ -47,15 +47,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
 
-  .state('app.settings', {
-    url: '/settings',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/settings.html'
-      }
-    }
-  })
-
   .state('app.tab', {
     url: "/tab",
     views: {
@@ -113,6 +104,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       'tab-account': {
         templateUrl: 'templates/settings.html',
         controller: 'AccountCtrl'
+      }
+    }
+  })
+
+  .state('app.tab.settings', {
+    url: '/settings',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/settings.html',
+        controller: 'AppCtrl'
       }
     }
   })
