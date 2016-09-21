@@ -336,9 +336,41 @@ angular.module('starter.controllers', [])
   $scope.openTimePicker = function(){
     ionicTimePicker.openTimePicker(ipObj1);
   };
+})
+
+
+.controller('PickupCtrl', function($scope) {
+
+		$scope.availableShifts = [
+			{ store: "Arboretum",
+				date: "2016-09-25",
+				start: "0900",
+				end: "1700",
+				postedby: "Bobby Allison",
+				prize: 10
+			},
+			{ store: "S. Congress",
+				date: "2016-09-26",
+				start: "0900",
+				end: "1500",
+				postedby: "Carol Roberts",
+				prize: 0
+			},{ store: "Westlake",
+				date: "2016-09-27",
+				start: "1400",
+				end: "2200",
+				postedby: "Alice Carroll",
+				prize: 25
+			},{ store: "N. Lamar",
+				date: "2016-09-28",
+				start: "1000",
+				end: "1400",
+				postedby: "Bobby Allison",
+				prize: 0
+			}
+		];
+
 });
-
-
 
 
 
