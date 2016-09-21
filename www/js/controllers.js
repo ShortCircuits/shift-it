@@ -178,26 +178,30 @@ angular.module('starter.controllers', [])
 								marker.setAnimation(google.maps.Animation.BOUNCE);
 						}
 
+
+						//jasjs
+						var info = "";
+						if(place.shifts){
+							place.shifts.forEach(function(shift){
+							info += `<li> ${place.name} <br />  ${place.vicinity} </li>
+											<li> Shifts available: </li>
+											<li> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
+												<strong> ${shift.shift_start} to ${shift.shift_end}</strong>
+												<span style="color:green">Prize: ${shift.prize}</span>
+												<button> Take this shift</button>
+											</li>`
+							});
+						}else{
+							info = "<li>No shifts available for this store</li>"
+						}
+						
 						// marker popup window
 						$scope.infowindow.setContent(
 
 							// back-ticks not working for testing suite
-							"<ul>\n<li> " + place.name + " <br />  " + place.vicinity + " </li>\n<li> Shifts available: </li>\n<li> <span style=\"font-size:9\"> " + place.shifts[0].submitted_by + " needs someone to cover a shift</span> <br/>\n<strong> " + place.shifts[0].shift_start + " to " + place.shifts[0].shift_end + "</strong>\n<span style=\"color:green\">Prize: " + place.shifts[0].prize + "</span>\n<button> Take this shift</button>\n</li>\n<li> <span style=\"font-size:9\">Mark needs someone to cover a shift</span> <br/>\n<strong> 09.23 => from 8am to 12pm </strong>\n<span style=\"color:green\">Prize: $20</span>\n<button> Take this shift</button>\n</li>\n</ul>"
-							
-							// `<ul>
-							// 	<li> ${place.name} <br />  ${place.vicinity} </li>
-							// 	<li> Shifts available: </li>
-							// 	<li> <span style="font-size:9"> ${place.shifts[0].submitted_by} needs someone to cover a shift</span> <br/>
-							// 		<strong> ${place.shifts[0].shift_start} to ${place.shifts[0].shift_end}</strong>
-							// 		<span style="color:green">Prize: ${place.shifts[0].prize}</span>
-							// 		<button> Take this shift</button>
-							// 	</li>
-							// 	<li> <span style="font-size:9">Mark needs someone to cover a shift</span> <br/>
-							// 		<strong> 09.23 => from 8am to 12pm </strong>
-							// 		<span style="color:green">Prize: $20</span>
-							// 		<button> Take this shift</button>
-							// 	</li>
-							// </ul>`
+							 // "<ul>\n<li> " + place.name + " <br />  " + place.vicinity + " </li>\n<li> Shifts available: </li>\n<li> <span style=\"font-size:9\"> " + place.shifts[0].submitted_by + " needs someone to cover a shift</span> <br/>\n<strong> " + place.shifts[0].shift_start + " to " + place.shifts[0].shift_end + "</strong>\n<span style=\"color:green\">Prize: " + place.shifts[0].prize + "</span>\n<button> Take this shift</button>\n</li>\n<li> <span style=\"font-size:9\">Mark needs someone to cover a shift</span> <br/>\n<strong> 09.23 => from 8am to 12pm </strong>\n<span style=\"color:green\">Prize: $20</span>\n<button> Take this shift</button>\n</li>\n</ul>"
+							`<ul>${info}</ul>`
+
 						);
 						$scope.infowindow.open($scope.map, this);
 				});
