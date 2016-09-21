@@ -78,16 +78,6 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
     }
   })
 
-  .state('app.pickup-list', {
-    url: '/pickup-list',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/pickup-list.html',
-        controller: 'PickupCtrl'
-      }
-    }
-  })
-
   .state('app.calendar', {
     url: '/calendar',
     views: {
@@ -117,6 +107,15 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
     }
   })
 
+  .state('app.tab.pickup-list', {
+    url: '/pickup-list',
+    views: {
+      'tab-pickup-list': {
+        templateUrl: 'templates/pickup-list.html',
+        controller: 'PickupCtrl'
+      }
+    }
+  })
   // Each tab has its own nav history stack:
 
   .state('app.tab.dash', {

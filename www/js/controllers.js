@@ -14,7 +14,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout) {
+.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout, AvailableShifts) {
 
 		$scope.map;
 		$scope.infowindow;
@@ -35,6 +35,10 @@ angular.module('starter.controllers', [])
 				$location = "app.tab.friends"
 		};
 
+		$scope.pickupShiftPage = function(){
+			$location = "app.pickup-list"
+
+		};
 		// Pickup a shift page
 		$scope.pickup = function() {
 				// $location = "app.tab.pickup"
@@ -162,35 +166,47 @@ angular.module('starter.controllers', [])
 
 		function createMarker(place) {
 				var loc = place.geometry.location;
+				var icons = ''
+				if(!place.shifts){
+				 icons = '../img/marker-gray.png'
+				}
 				var marker = new google.maps.Marker({
 						position: {
 								lat: place.geometry.location.lat,
 								lng: place.geometry.location.lng
 						},
-						animation: google.maps.Animation.DROP
+						animation: google.maps.Animation.DROP,
+						icon: icons
 				});
 
 				marker.setMap($scope.map);
 				google.maps.event.addListener(marker, 'click', function() {
-						if (marker.getAnimation() !== null) {
-								marker.setAnimation(null);
-						} else {
-								marker.setAnimation(google.maps.Animation.BOUNCE);
-						}
-
+						// if (marker.getAnimation() !== null) {
+						// 		marker.setAnimation(null);
+						// } else {
+						// 		marker.setAnimation(google.maps.Animation.BOUNCE);
+						// }
 
 						//jasjs
 						var info = "";
 						if(place.shifts){
 							place.shifts.forEach(function(shift){
-							info += `<li> ${place.name} <br />  ${place.vicinity} </li>
+								var shiftObj = {};
+								shiftObj.store = place.vicinity;
+								shiftObj.start = shift.shift_start;
+								shiftObj.end = shift.shift_end;
+								shiftObj.postedby = shift.submitted_by;
+								shiftObj.prize = shift.prize;
+								AvailableShifts.addShift(shiftObj);
+
+								info += `<li> ${place.name} <br />  ${place.vicinity} </li>
 											<li> Shifts available: </li>
-											<li> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
+											<li id="listElement"> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
 												<strong> ${shift.shift_start} to ${shift.shift_end}</strong>
 												<span style="color:green">Prize: ${shift.prize}</span>
-												<button> Take this shift</button>
+												<button onclick="window.location = '#/app/tab/pickup-list'"> Take shift</button>
 											</li>`
-							});
+								});
 						}else{
 							info = "<li>No shifts available for this store</li>"
 						}
@@ -343,36 +359,9 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('PickupCtrl', function($scope) {
-
-		$scope.availableShifts = [
-			{ store: "Arboretum",
-				date: "2016-09-25",
-				start: "0900",
-				end: "1700",
-				postedby: "Bobby Allison",
-				prize: 10
-			},
-			{ store: "S. Congress",
-				date: "2016-09-26",
-				start: "0900",
-				end: "1500",
-				postedby: "Carol Roberts",
-				prize: 0
-			},{ store: "Westlake",
-				date: "2016-09-27",
-				start: "1400",
-				end: "2200",
-				postedby: "Alice Carroll",
-				prize: 25
-			},{ store: "N. Lamar",
-				date: "2016-09-28",
-				start: "1000",
-				end: "1400",
-				postedby: "Bobby Allison",
-				prize: 0
-			}
-		];
+.controller('PickupCtrl', function($scope, AvailableShifts) {
+		
+		$scope.availableShifts = AvailableShifts.getShifts();
 
 });
 
