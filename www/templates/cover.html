@@ -1,20 +1,14 @@
-<ion-view view-title="Cover my shift">
-  <!-- <ion-content class="padding">
-    <p class="profile-header"> Name </p>
-    <p class="profile-info">{{ profileData.name }}</p>
-    
-    <p class="profile-header"> Email </p>
-    <p class="profile-info">{{ profileData.email }}</p>
-    
-    <p class="profile-header"> Phone </p>
-    <p class="profile-info">{{ profileData.phone }}</p>
-    
-    <p class="profile-header"> Main Shop </p>
-    <p class="profile-info">{{ profileData.mainshop }}</p>
+<ion-view view-title="Pick a Date">
+  <ion-content class="padding cover">
 
-    <p class="profile-header"> Secondary Shops </p>
-    <p class="profile-info">{{ profileData.secondary }}</p>
+    <p class="calendar-title"> Calendar </p>
+    <button class="button button-positive" ng-click="openDatePicker()">Pick a Date</button>
+    
+    <p class="time-title"> Time </p>
+    <button class="button button-positive" ng-click="openTimePicker()">Pick a Time</button>
 
-    <button class="button button-positive" ng-click="openEditProfile()">Edit Profile</button>
-  </ion-content> -->
+    <p class="time-title"> Prize </p>
+    <button class="button button-positive" ng-click="submitPrize()">Give a Prize</button>
+
+  </ion-content>
 </ion-view>
