@@ -382,11 +382,17 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('PickupCtrl', function($scope, AvailableShifts, $location) {
+.controller('PickupCtrl', function($scope, AvailableShifts, $location, $state) {
 		
 		$scope.availableShifts = AvailableShifts.getShifts();
-		$scope.callFriend = function(){
-			window.location = "#/app/profile";
+		$scope.callFriend = function(friend){
+			var friendo = 0;
+			if(friend === 111 || friend === 222){
+				friendo = 1;
+			}else if(friend === 333 || friend === 444){
+				friendo = 2
+			}
+			window.location = "#/app/friend/"+friendo;
 			console.log("calling friend")
 		}
 

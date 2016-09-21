@@ -88,6 +88,26 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
     }
   })
 
+  .state('app.friends', {
+    url: '/friends',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/tab-friends.html',
+        controller: 'FriendsCtrl'
+      }
+    }
+  })
+
+  .state('app.friend-detail', {
+    url: '/friend/:friendId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/friend-detail.html',
+        controller: 'FriendDetailCtrl'
+      }
+    }
+  })
+
   .state('app.tab', {
     url: "/tab",
     views: {
@@ -114,26 +134,6 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
       'tab-dash': {
         templateUrl: 'templates/tab-dash.html',
         controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('app.tab.friends', {
-    url: '/friends',
-    views: {
-      'tab-friends': {
-        templateUrl: 'templates/tab-friends.html',
-        controller: 'FriendsCtrl'
-      }
-    }
-  })
-
-  .state('app.tab.friend-detail', {
-    url: '/friend/:friendId',
-    views: {
-      'tab-friends': {
-        templateUrl: 'templates/friend-detail.html',
-        controller: 'FriendDetailCtrl'
       }
     }
   })
