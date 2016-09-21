@@ -14,7 +14,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout) {
+.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout, AvailableShifts) {
 
 		$scope.map;
 		$scope.infowindow;
@@ -35,6 +35,9 @@ angular.module('starter.controllers', [])
 				$location = "app.tab.friends"
 		};
 
+		$scope.pickupShiftPage = function(){
+			$location = "app.pickup-list"
+		};
 		// Pickup a shift page
 		$scope.pickup = function() {
 				// $location = "app.tab.pickup"
@@ -187,14 +190,22 @@ angular.module('starter.controllers', [])
 						var info = "";
 						if(place.shifts){
 							place.shifts.forEach(function(shift){
-							info += `<li> ${place.name} <br />  ${place.vicinity} </li>
+								var shiftObj = {};
+								shiftObj.store = place.vicinity;
+								shiftObj.start = shift.shift_start;
+								shiftObj.end = shift.shift_end;
+								shiftObj.postedby = shift.submitted_by;
+								shiftObj.prize = shift.prize;
+								AvailableShifts.addShift(shiftObj);
+
+								info += `<li> ${place.name} <br />  ${place.vicinity} </li>
 											<li> Shifts available: </li>
 											<li> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
 												<strong> ${shift.shift_start} to ${shift.shift_end}</strong>
 												<span style="color:green">Prize: ${shift.prize}</span>
-												<button> Take this shift</button>
+												<button onclick="window.location = '#/app/pickup-list'"> Take this shift</button>
 											</li>`
-							});
+								});
 						}else{
 							info = "<li>No shifts available for this store</li>"
 						}
@@ -347,36 +358,9 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('PickupCtrl', function($scope) {
+.controller('PickupCtrl', function($scope, AvailableShifts) {
 
-		$scope.availableShifts = [
-			{ store: "Arboretum",
-				date: "2016-09-25",
-				start: "0900",
-				end: "1700",
-				postedby: "Bobby Allison",
-				prize: 10
-			},
-			{ store: "S. Congress",
-				date: "2016-09-26",
-				start: "0900",
-				end: "1500",
-				postedby: "Carol Roberts",
-				prize: 0
-			},{ store: "Westlake",
-				date: "2016-09-27",
-				start: "1400",
-				end: "2200",
-				postedby: "Alice Carroll",
-				prize: 25
-			},{ store: "N. Lamar",
-				date: "2016-09-28",
-				start: "1000",
-				end: "1400",
-				postedby: "Bobby Allison",
-				prize: 0
-			}
-		];
+		$scope.availableShifts = AvailableShifts.getShifts();
 
 });
 

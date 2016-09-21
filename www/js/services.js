@@ -77,6 +77,22 @@ angular.module('starter.services', [])
     }
   }
 
-});
+})
+
+.factory('AvailableShifts', function(){
+
+  //simplified version of the factory / currently all shifts cramed into one array
+  var availableShifts = [];
+
+  return {
+    // no select by store for now :: TODO
+    getShifts(store){
+      return availableShifts;
+    },
+    addShift(shift){
+      availableShifts.push(shift)
+    }
+  }
+})
 
 
