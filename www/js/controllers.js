@@ -178,7 +178,6 @@ angular.module('starter.controllers', [])
 								marker.setAnimation(google.maps.Animation.BOUNCE);
 						}
 
-
 						//jasjs
 						var info = "";
 						if(place.shifts){
