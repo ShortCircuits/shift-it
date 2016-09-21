@@ -37,6 +37,7 @@ angular.module('starter.controllers', [])
 
 		$scope.pickupShiftPage = function(){
 			$location = "app.pickup-list"
+
 		};
 		// Pickup a shift page
 		$scope.pickup = function() {
@@ -163,6 +164,12 @@ angular.module('starter.controllers', [])
 				// }
 		}
 
+		// helper function
+		window.goToPage2 = function(){
+			console.log("going to page")
+			window.location = "#/app/tab/pickup-list";
+		}
+
 		function createMarker(place) {
 				var loc = place.geometry.location;
 				var icons = ''
@@ -200,10 +207,12 @@ angular.module('starter.controllers', [])
 
 								info += `<li> ${place.name} <br />  ${place.vicinity} </li>
 											<li> Shifts available: </li>
-											<li> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
+											<li id="listElement"> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
 												<strong> ${shift.shift_start} to ${shift.shift_end}</strong>
 												<span style="color:green">Prize: ${shift.prize}</span>
-												<button onclick="window.location = '#/app/pickup-list'"> Take this shift</button>
+												<button onclick="window.location = '#/app/tab/pickup-list'"> Take shift</button>
+												<button onclick="window.goToPage2()"> Take shift</button>
+												
 											</li>`
 								});
 						}else{
@@ -359,7 +368,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('PickupCtrl', function($scope, AvailableShifts) {
-
+		
 		$scope.availableShifts = AvailableShifts.getShifts();
 
 });
