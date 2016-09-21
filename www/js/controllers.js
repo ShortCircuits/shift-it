@@ -164,12 +164,6 @@ angular.module('starter.controllers', [])
 				// }
 		}
 
-		// helper function
-		window.goToPage2 = function(){
-			console.log("going to page")
-			window.location = "#/app/tab/pickup-list";
-		}
-
 		function createMarker(place) {
 				var loc = place.geometry.location;
 				var icons = ''
@@ -211,8 +205,6 @@ angular.module('starter.controllers', [])
 												<strong> ${shift.shift_start} to ${shift.shift_end}</strong>
 												<span style="color:green">Prize: ${shift.prize}</span>
 												<button onclick="window.location = '#/app/tab/pickup-list'"> Take shift</button>
-												<button onclick="window.goToPage2()"> Take shift</button>
-												
 											</li>`
 								});
 						}else{
