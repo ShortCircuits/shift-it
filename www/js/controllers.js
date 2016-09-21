@@ -177,11 +177,11 @@ angular.module('starter.controllers', [])
 
 				marker.setMap($scope.map);
 				google.maps.event.addListener(marker, 'click', function() {
-						if (marker.getAnimation() !== null) {
-								marker.setAnimation(null);
-						} else {
-								marker.setAnimation(google.maps.Animation.BOUNCE);
-						}
+						// if (marker.getAnimation() !== null) {
+						// 		marker.setAnimation(null);
+						// } else {
+						// 		marker.setAnimation(google.maps.Animation.BOUNCE);
+						// }
 
 						//jasjs
 						var info = "";
