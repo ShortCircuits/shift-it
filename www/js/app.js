@@ -88,16 +88,6 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
     }
   })
 
-  .state('app.timepicker', {
-    url: '/timepicker',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/timepicker.html',
-        controller: 'TimepickerCtrl'
-      }
-    }
-  })
-
   .state('app.tab', {
     url: "/tab",
     views: {
