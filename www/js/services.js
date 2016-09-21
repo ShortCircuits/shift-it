@@ -90,6 +90,7 @@ angular.module('starter.services', [])
       return availableShifts;
     },
     addShift(shift){
+      // each shift should have UUID so we can eliminate duplicates from the list
       availableShifts.push(shift)
     }
   }
