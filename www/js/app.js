@@ -78,16 +78,6 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
     }
   })
 
-  .state('app.calendar', {
-    url: '/calendar',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/calendar.html',
-        controller: 'CalendarCtrl'
-      }
-    }
-  })
-
   .state('app.cover', {
     url: '/cover',
     views: {
