@@ -162,12 +162,17 @@ angular.module('starter.controllers', [])
 
 		function createMarker(place) {
 				var loc = place.geometry.location;
+				var icons = ''
+				if(!place.shifts){
+				 icons = '../img/marker-gray.png'
+				}
 				var marker = new google.maps.Marker({
 						position: {
 								lat: place.geometry.location.lat,
 								lng: place.geometry.location.lng
 						},
-						animation: google.maps.Animation.DROP
+						animation: google.maps.Animation.DROP,
+						icon: icons
 				});
 
 				marker.setMap($scope.map);
