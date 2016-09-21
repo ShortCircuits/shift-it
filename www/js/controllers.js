@@ -302,15 +302,19 @@ angular.module('starter.controllers', [])
 		};
 })
 
-.controller('CalendarCtrl', function($scope, ionicDatePicker){
-	$scope.$on('$ionicView.enter', function() {
+.controller('CoverCtrl', function($scope, ionicDatePicker, ionicTimePicker){
+  $scope.shiftData = {};
+  $scope.$on('$ionicView.enter', function() {
 	   // Code you want executed every time view is opened
 	   $scope.openDatePicker();
 	   console.log('Opened!')
 	})
 	var ipObj1 = {
       callback: function (val) {  //Mandatory
+      	$scope.shiftData.shift_start = new Date(val);
+      	console.log("shiftData is: ", $scope.shiftData);
         console.log('Return value from the datepicker popup is : ' + val, new Date(val));
+        $scope.openTimePicker();
       },
       disabledDates: [            //Optional
         new Date(2016, 2, 16),
@@ -329,15 +333,22 @@ angular.module('starter.controllers', [])
       closeOnSelect: false,       //Optional
       templateType: 'popup'       //Optional
     };
+  var ipObj2 = {
+    callback: function (val) {      //Mandatory
+      if (typeof (val) === 'undefined') {
+        console.log('Time not selected');
+      } else {
+        var selectedTime = new Date(val * 1000);
+        console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
+      }
+    },
+    inputTime: 50400,   //Optional
+    format: 12,         //Optional
+    step: 15,           //Optional
+    setLabel: 'Set2'    //Optional
+  };
 
-    $scope.openDatePicker = function(){
-      ionicDatePicker.openDatePicker(ipObj1);
-    };
-})
-
-.controller('TimepickerCtrl', function ($scope, ionicTimePicker) {
-
-  var ipObj1 = {
+  var ipObj3 = {
     callback: function (val) {      //Mandatory
       if (typeof (val) === 'undefined') {
         console.log('Time not selected');
@@ -354,10 +365,22 @@ angular.module('starter.controllers', [])
 
   // ionicTimePicker.openTimePicker(ipObj1);
   $scope.openTimePicker = function(){
-    ionicTimePicker.openTimePicker(ipObj1);
+    ionicTimePicker.openTimePicker(ipObj3);
   };
-})
 
+  // ionicTimePicker.openTimePicker(ipObj1);
+  $scope.openTimePicker = function(){
+    ionicTimePicker.openTimePicker(ipObj2);
+  };
+
+  $scope.openDatePicker = function(){
+    ionicDatePicker.openDatePicker(ipObj1);
+  };
+
+  $scope.openProzePicker = function(){
+
+  }
+})
 
 .controller('PickupCtrl', function($scope, AvailableShifts, $location) {
 		
