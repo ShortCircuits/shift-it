@@ -31,7 +31,8 @@ angular.module('starter.controllers', [])
 
 		// Cover shift page
 		$scope.cover = function() {
-				$location = "app.tab.friends"
+				window.location = "#/app/tab/cover2"
+				document.getElementById("notification").style.display = 'none';
 		};
 
 		$scope.pickupShiftPage = function() {
@@ -43,6 +44,7 @@ angular.module('starter.controllers', [])
 				// $location = "app.tab.pickup"
 				document.getElementById("pickupshift").style.display = 'none';
 				document.getElementById("covermyshift").style.display = 'none';
+				document.getElementById("notification").style.display = 'block';
 				$http({
 						method: 'GET',
 						url: 'https://shift-it.herokuapp.com/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
