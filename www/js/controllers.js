@@ -29,9 +29,29 @@ angular.module('starter.controllers', [])
 				document.getElementById("loading").style.display = 'none';
 		}, 6000)
 
-		// Cover shift page
+		// Take the shift button was clicked
 		$scope.cover = function() {
-				$location = "app.tab.friends"
+
+			// make request to the server too see if there shotul be notification for the user
+			$http({
+						method: 'GET',
+						url: 'https://shift-it.herokuapp.com/pickup'
+				}).then(function successCallback(response) {
+						console.log("got response", response.data)
+						// TODO
+						// wishfull programing
+						if(response){
+							// user has notification
+							document.getElementById("notification").style.display = 'block';
+							// store data in the factory for view to use
+
+							// relocate the user
+							window.location = "#/app/tab/cover2"
+						}
+				}, function errorCallback(response) {
+						alert("Could not get notifications from server, suprise")
+				});
+				document.getElementById("notification").style.display = 'none';
 		};
 
 		$scope.pickupShiftPage = function() {
@@ -43,6 +63,7 @@ angular.module('starter.controllers', [])
 				// $location = "app.tab.pickup"
 				document.getElementById("pickupshift").style.display = 'none';
 				document.getElementById("covermyshift").style.display = 'none';
+
 				$http({
 						method: 'GET',
 						url: 'https://shift-it.herokuapp.com/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
@@ -146,7 +167,6 @@ angular.module('starter.controllers', [])
 						// 		marker.setAnimation(google.maps.Animation.BOUNCE);
 						// }
 
-						//jasjs
 						var info = "";
 						if (place.shifts) {
 								place.shifts.forEach(function(shift) {

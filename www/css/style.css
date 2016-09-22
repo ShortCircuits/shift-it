@@ -21,6 +21,20 @@
     text-align: center;
 }
 
+#notification {
+  display: none;
+  position: absolute;
+  top:8%;
+  right: 1%;
+  width:20%;
+  height:10%;
+  z-index: 101;
+  background-color: #cecece;
+  opacity: 0.9; 
+  text-align: right;
+  padding: 10px;
+}
+
 #loading {
   padding:20px;
   background-color: white;
