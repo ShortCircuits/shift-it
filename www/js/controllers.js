@@ -272,6 +272,7 @@ angular.module('starter.controllers', [])
 		};
 })
 
+// This controller handles the functionality for creating and posting a new shift.
 .controller('CoverCtrl', function($scope, $ionicModal, ionicDatePicker, ionicTimePicker, $http){
   // change storeId and submitted_by to be dynamically loaded in when that is available.
   $scope.shiftData = {storeId      : "ChIJPXmIAnW1RIYRRwVbIcKT_Cw", covered: false, submitted_by: 555};
@@ -280,7 +281,10 @@ angular.module('starter.controllers', [])
 	   $scope.openDatePicker();
 	   console.log('Opened!')
 	})
-	var ipObj1 = {
+	
+  // This is the Date picker modal popout, that initializes the shift_start and shift_end keys in the shift object
+  // On a chosen date it sets both values to the chosen date with no time, and then it shows the first time picker
+  var ipObj1 = {
       callback: function (val) {  //Mandatory
       	$scope.shiftData.shift_start = new Date(val);
         $scope.shiftData.shift_end = new Date(val);
@@ -305,12 +309,17 @@ angular.module('starter.controllers', [])
       closeOnSelect: false,       //Optional
       templateType: 'popup'       //Optional
     };
+
+  // This function converts the minutes into a 2 digit number if 0 is chosen
   function convertMinutes(minutes){
     if (minutes === 0){
       return "00"
     }
     return minutes;
   }
+
+  // This is the modal for the end shift time picker, it will update the shift object with the correct time in the
+  // current time zone for the user. On submit it opens the prize picker modal.
   var ipObj2 = {
     callback: function (val) {      //Mandatory
       if (typeof (val) === 'undefined') {
@@ -331,6 +340,8 @@ angular.module('starter.controllers', [])
     setLabel: 'Set2'    //Optional
   };
 
+  // This is the modal for the start shift time picker, it will update the shift object with the correct time in the
+  // current time zone for the user. On submit it opens the end shift time picker modal.
   var ipObj3 = {
     callback: function (val) {      //Mandatory
       if (typeof (val) === 'undefined') {
@@ -351,40 +362,48 @@ angular.module('starter.controllers', [])
     setLabel: 'Set2'    //Optional
   };
 
+  // This shows the prize picker modal
   $ionicModal.fromTemplateUrl('templates/prizeModal.html', {
         scope: $scope
     }).then(function(modal) {
         $scope.modal = modal;
     });
 
-  // ionicTimePicker.openTimePicker(ipObj1);
+  // Function for the end shift time picker
   $scope.openTimePicker1 = function(){
     ionicTimePicker.openTimePicker(ipObj3);
   };
 
-  // ionicTimePicker.openTimePicker(ipObj1);
+  // Function for the start shift time picker
   $scope.openTimePicker2 = function(){
     ionicTimePicker.openTimePicker(ipObj2);
   };
 
+  // Function for the date picker
   $scope.openDatePicker = function(){
     ionicDatePicker.openDatePicker(ipObj1);
   };
 
+  // Function to show the prize picker
   $scope.prizePicker = function(){
     $scope.modal.show();
   }
 
+  // Function to submit the prize to the shift object
   $scope.addPrize = function() {
     console.log($scope.shiftData);
     $scope.closePrize();
   };
 
+  // Function to close the prize modal
   $scope.closePrize = function() {
     $scope.modal.hide();
   };
+
+  // Setting a variable to the fully fleshed out shiftData
   var shift = $scope.shiftData;
 
+  // Server call to insert the shift data into the database.
   $scope.postShift = function() {
     $http({
       method: 'POST',
