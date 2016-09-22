@@ -14,22 +14,38 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout, AvailableShifts) {
+.controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout, AvailableShifts, $ionicLoading) {
 
 		$scope.map;
 		$scope.infowindow;
 		$scope.location = Maps.getLocation();
 
+		$scope.show = function() {
+	    $ionicLoading.show({
+	      template: '<p>Loading please wait..</p><ion-spinner icon="lines"></ion-spinner>',
+	      noBackdrop: true
+	    });
+	  };
+
+  $scope.hide = function(){
+      $ionicLoading.hide();
+  };
+
+  	$scope.show($ionicLoading);
+
 		document.getElementById("pickupshift").style.display = 'none';
 		document.getElementById("covermyshift").style.display = 'none';
+		document.getElementById("loading").style.display = 'none';
 
 		$timeout(function() {
 				document.getElementById("pickupshift").style.display = 'block';
 				document.getElementById("covermyshift").style.display = 'block';
-				document.getElementById("loading").style.display = 'none';
-		}, 6000)
+				$scope.hide($ionicLoading);
+				//document.getElementById("loading").style.display = 'none';
 
-		// Take the shift button was clicked
+		}, 4000)
+
+		// Cover shift page
 		$scope.cover = function() {
 
 			// make request to the server too see if there shotul be notification for the user
@@ -63,16 +79,19 @@ angular.module('starter.controllers', [])
 				// $location = "app.tab.pickup"
 				document.getElementById("pickupshift").style.display = 'none';
 				document.getElementById("covermyshift").style.display = 'none';
-
+				$scope.show($ionicLoading);
 				$http({
 						method: 'GET',
 						url: 'https://shift-it.herokuapp.com/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
 				}).then(function successCallback(response) {
 						console.log("got response", response.data)
 						callback(response.data)
+				$scope.hide($ionicLoading);
 				}, function errorCallback(response) {
 						alert("Could not get stores from the server, please try again later")
 				});
+				$scope.show($ionicLoading);
+
 		};
 
 		var onSuccess = function(position) {
