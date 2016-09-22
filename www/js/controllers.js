@@ -304,12 +304,22 @@ angular.module('starter.controllers', [])
       closeOnSelect: false,       //Optional
       templateType: 'popup'       //Optional
     };
+  function convertMinutes(minutes){
+    if (minutes === 0){
+      return "00"
+    }
+    return minutes;
+  }
   var ipObj2 = {
     callback: function (val) {      //Mandatory
       if (typeof (val) === 'undefined') {
         console.log('Time not selected');
       } else {
+        var splitStart = $scope.shiftData.shift_start.toString().split(' ');
         var selectedTime = new Date(val * 1000);
+        splitStart[4] = selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes()) + ":00";
+        $scope.shiftData.shift_end = new Date(splitStart.join(' '));
+        console.log($scope.shiftData);
         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
       }
       $scope.prizePicker();
@@ -325,7 +335,11 @@ angular.module('starter.controllers', [])
       if (typeof (val) === 'undefined') {
         console.log('Time not selected');
       } else {
+        var splitStart = $scope.shiftData.shift_start.toString().split(' ');
         var selectedTime = new Date(val * 1000);
+        splitStart[4] = selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes()) + ":00";
+        $scope.shiftData.shift_start = new Date(splitStart.join(' '));
+        console.log("our built time is: ", splitStart);
         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
       }
       $scope.openTimePicker2();
