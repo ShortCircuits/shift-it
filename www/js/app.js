@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'satellizer', 'ionic-datepicker', 'ionic-timepicker', 'starter.controllers', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -24,7 +24,7 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, ionicDatePickerProvider, ionicTimePickerProvider) {
+.config(function($stateProvider, $urlRouterProvider, ionicDatePickerProvider, ionicTimePickerProvider, $authProvider) {
 
   var datePickerObj = {
       inputDate: new Date(),
@@ -53,6 +53,24 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'ionic-timepicker', 'sta
       closeLabel: 'Close'
     };
     ionicTimePickerProvider.configTimePicker(timePickerObj);
+
+    //this is for Satellizer and providing our authorization functionality
+    var commonConfig = {
+        popupOptions: {
+        location: 'no',
+        toolbar: 'yes',
+        width: window.screen.width,
+        height: window.screen.height
+                        }
+    };
+
+    if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
+        commonConfig.redirectUri = 'http://localhost:8100/';
+    }
+    $authProvider.facebook(angular.extend({}, commonConfig, {
+        clientId: '1169374106434305',
+        url: 'http://localhost:4000/auth/facebook'
+    }));
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
