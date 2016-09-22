@@ -146,12 +146,12 @@ angular.module('starter', ['ionic', 'satellizer', 'ionic-datepicker', 'ionic-tim
   })
   // Each tab has its own nav history stack:
 
-  .state('app.tab.dash', {
-    url: '/dash',
+  .state('app.tab.cover', {
+    url: '/cover2',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'tab-cover': {
+        templateUrl: 'templates/cover.html',
+        controller: 'CoverCtrl'
       }
     }
   })
@@ -176,15 +176,6 @@ angular.module('starter', ['ionic', 'satellizer', 'ionic-datepicker', 'ionic-tim
     }
   })
 
-  .state('app.tab.settings', {
-    url: '/settings',
-    views: {
-      'tab-settings': {
-        templateUrl: 'templates/settings.html',
-        controller: 'AppCtrl'
-      }
-    }
-  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('app/tab/map');
