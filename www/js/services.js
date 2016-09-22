@@ -86,10 +86,10 @@ angular.module('starter.services', [])
 
   return {
     // no select by store for now :: TODO
-    getShifts(store){
+    getShifts: function(store){
       return availableShifts;
     },
-    addShift(shift){
+    addShift: function(shift){
       // each shift should have UUID so we can eliminate duplicates from the list
       availableShifts.push(shift)
     }
