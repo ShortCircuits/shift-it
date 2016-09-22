@@ -309,9 +309,16 @@ angular.module('starter.controllers', [])
       callback: function (val) {  //Mandatory
       	$scope.shiftData.shift_start = new Date(val);
         $scope.shiftData.shift_end = new Date(val);
+        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       	console.log("shiftData is: ", $scope.shiftData);
         console.log('Return value from the datepicker popup is : ' + val, new Date(val));
         $scope.openTimePicker1();
+        $scope.shiftDate = $scope.shiftData.shift_start.getUTCDate() + " " + monthNames[$scope.shiftData.shift_start.getUTCMonth()] + " " + $scope.shiftData.shift_start.getUTCFullYear()
+
+        // var month = dateObj.getUTCMonth() + 1; //months from 1-12
+        // var day = dateObj.getUTCDate();
+        // var year = dateObj.getUTCFullYear();
+
       },
       disabledDates: [            //Optional
         new Date(2016, 2, 16),
@@ -326,7 +333,7 @@ angular.module('starter.controllers', [])
       to: new Date(2016, 10, 30), //Optional
       inputDate: new Date(),      //Optional
       mondayFirst: true,          //Optional
-      disableWeekdays: [0],       //Optional
+      // disableWeekdays: [0],       //Optional
       closeOnSelect: false,       //Optional
       templateType: 'popup'       //Optional
     };
@@ -354,6 +361,7 @@ angular.module('starter.controllers', [])
         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
       }
       $scope.prizePicker();
+      $scope.endTime = selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes());
     },
     inputTime: 50400,   //Optional
     format: 12,         //Optional
@@ -376,6 +384,7 @@ angular.module('starter.controllers', [])
         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
       }
       $scope.openTimePicker2();
+      $scope.startTime = selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes());
     },
     inputTime: 50400,   //Optional
     format: 12,         //Optional
