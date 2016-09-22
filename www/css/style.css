@@ -41,6 +41,13 @@
   opacity: 0.9; 
 }
 
+.spinner svg {
+  width: 28px;
+  height: 28px;
+  stroke: #0E848C;
+  fill: #444;
+}
+
 .bar.bar-stable {
 	background-color: #00592D;
 	box-shadow: 0px 1px 2px #888888;
