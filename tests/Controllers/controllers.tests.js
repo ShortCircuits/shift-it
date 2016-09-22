@@ -21,7 +21,7 @@ describe('Profile Controller', function(){
     it('should have variable profileData', function(){
         expect(scope.profileData).toBeDefined();
     });
-});
+})
 
 
 describe('Cover Controller', function(){
