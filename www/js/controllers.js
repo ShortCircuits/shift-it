@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
 				document.getElementById("covermyshift").style.display = 'none';
 				$http({
 						method: 'GET',
-						url: 'https://shift-it.herokuapp.com/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
+						url: 'http://localhost:4000/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
 				}).then(function successCallback(response) {
 						console.log("got response", response.data)
 						callback(response.data)
@@ -213,6 +213,10 @@ angular.module('starter.controllers', [])
 				UserService.authenticate(provider);
 		};
 
+		$scope.logout = function() {
+				UserService.logOut();
+		};
+
 		$rootScope.$on('userLoggedIn', function(data) {
 				// here we will recieve the logged in user
 				console.log(data);
@@ -223,16 +227,6 @@ angular.module('starter.controllers', [])
 		$rootScope.$on('userFailedLogin', function() {
 
 		});
-
-		// Perform the login action when the user submits the login form
-		$scope.doLogin = function() {
-
-				// Simulate a login delay. Remove this and replace with your login
-				// code if using a login system
-				$timeout(function() {
-						$scope.closeLogin();
-				}, 100);
-		};
 
 		// Hamburger button active state switcher
 		// There is a bug when clicking on tab buttons while sidemenu is open,
