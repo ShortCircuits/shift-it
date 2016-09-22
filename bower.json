@@ -8,6 +8,7 @@
   "dependencies": {
     "ngCordova": "^0.1.27-alpha",
     "ionic-datepicker": "^1.2.1",
-    "ionic-timepicker": "^0.6.0"
+    "ionic-timepicker": "^0.6.0",
+    "satellizer": "^0.15.5"
   }
 }

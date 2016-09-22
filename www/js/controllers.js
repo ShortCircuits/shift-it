@@ -224,7 +224,7 @@ angular.module('starter.controllers', [])
 		}
 })
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, UserService) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -252,6 +252,21 @@ angular.module('starter.controllers', [])
 		$scope.login = function() {
 				$scope.modal.show();
 		};
+
+		 $scope.authenticate = function(provider) {
+    UserService.authenticate(provider);
+  	};
+
+	  $rootScope.$on('userLoggedIn', function(data){
+	    // here we will recieve the logged in user
+	    console.log(data);
+	    $scope.closeLogin();
+	  });
+
+	  // will fire in case authentication failed
+	  $rootScope.$on('userFailedLogin', function(){
+
+	  });
 
 		// Perform the login action when the user submits the login form
 		$scope.doLogin = function() {
