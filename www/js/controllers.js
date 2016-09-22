@@ -272,8 +272,9 @@ angular.module('starter.controllers', [])
 		};
 })
 
-.controller('CoverCtrl', function($scope, $ionicModal, ionicDatePicker, ionicTimePicker){
-  $scope.shiftData = {storeId      : "ChIJPXmIAnW1RIYRRwVbIcKT_Cw"};
+.controller('CoverCtrl', function($scope, $ionicModal, ionicDatePicker, ionicTimePicker, $http){
+  // change storeId and submitted_by to be dynamically loaded in when that is available.
+  $scope.shiftData = {storeId      : "ChIJPXmIAnW1RIYRRwVbIcKT_Cw", covered: false, submitted_by: 555};
   $scope.$on('$ionicView.enter', function() {
 	   // Code you want executed every time view is opened
 	   $scope.openDatePicker();
@@ -383,6 +384,18 @@ angular.module('starter.controllers', [])
     $scope.modal.hide();
   };
   var shift = $scope.shiftData;
+
+  $scope.postShift = function() {
+    $http({
+      method: 'POST',
+      url: 'https://shift-it.herokuapp.com/shifts',
+      data: shift
+    }).then(function(response){
+      console.log("shift submitted to database with shift data: ", shift);
+    }, function(error){
+      console.log("error posting shift to db")
+    })
+  }
   // if(shift.shift_start && shift.shift_end && shift.prize){}
 })
 
