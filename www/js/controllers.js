@@ -82,7 +82,7 @@ angular.module('starter.controllers', [])
 				$scope.show($ionicLoading);
 				$http({
 						method: 'GET',
-						url: 'http://localhost:4000/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
+						url: 'https://shift-it.herokuapp.com/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
 				}).then(function successCallback(response) {
 						console.log("got response", response.data)
 						callback(response.data)
