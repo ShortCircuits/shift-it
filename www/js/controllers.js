@@ -433,3 +433,9 @@ angular.module('starter.controllers', [])
 		}
 
 });
+
+.controller('PartnerCtrl', function($scope) {
+	// possible get request to db to fetch facebook profile data
+		$scope.partnerInfo = {};
+		console.log("partner info from fb");
+});
