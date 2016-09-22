@@ -126,6 +126,16 @@ angular.module('starter', ['ionic', 'satellizer', 'ionic-datepicker', 'ionic-tim
     }
   })
 
+  .state('app.partner', {
+    url: '/partner',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/partner.html',
+        controller: 'PartnerCtrl'
+      }
+    }
+  })
+
   .state('app.tab', {
     url: "/tab",
     views: {
