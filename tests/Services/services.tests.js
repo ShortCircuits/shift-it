@@ -20,6 +20,16 @@ describe('Friends Unit Tests', function(){
         expect(Friends.get(1).name).toEqual(oneFriend.name);
     }));
 
+    it('has mr. Doug as friend with id 0', inject(function(Friends) {
+        var oneFriend = {
+            id: 0,
+            name: 'mr. Doug'
+        };
+
+        expect(Friends.get(0).name).toEqual(oneFriend.name);
+    }));
+
+
     it('should have mr. Doug with id of 0', inject(function(Friends) {
         expect(Friends.all().length).toEqual(5);
     }))
@@ -47,6 +57,50 @@ describe('Profile Unit Tests', function(){
         expect(Profile.get().name).toEqual(testProfile.name);
   }))
 
+    it('should have valid profile data', inject(function(Profile){
+        var testProfile = {
+            name: 'Oscar',
+            email: 'Oscar@gmail.com',
+            phone: '',
+            mainshop: '',
+            secondaryShop: ''
+        };
+        expect(Profile.get().email).toEqual(testProfile.email);
+  }))
+
+    it('should have valid profile data', inject(function(Profile){
+        var testProfile = {
+            name: 'Oscar',
+            email: 'Oscar@gmail.com',
+            phone: '555-555-5555',
+            mainshop: '',
+            secondaryShop: ''
+        };
+        expect(Profile.get().phone).toEqual(testProfile.phone);
+  }))
+
+    it('should have valid profile data', inject(function(Profile){
+        var testProfile = {
+            name: 'Oscar',
+            email: 'Oscar@gmail.com',
+            phone: '555-555-5555',
+            mainshop: '23',
+            secondaryShop: ''
+        };
+        expect(Profile.get().mainshop).toEqual(testProfile.mainshop);
+  }))
+
+        it('should have valid profile data', inject(function(Profile){
+        var testProfile = {
+            name: 'Oscar',
+            email: 'Oscar@gmail.com',
+            phone: '555-555-5555',
+            mainshop: '23',
+            secondaryShop: '44'
+        };
+        expect(Profile.get().secondaryShop).toEqual(testProfile.secondaryShop);
+  }))
+
   // test to see if set function is working in Profile factory
   it('should set new values to profile', inject(function(Profile) {
       var profileInfoTest = {
@@ -61,9 +115,6 @@ describe('Profile Unit Tests', function(){
 
       expect(Profile.get()).toEqual(profileInfoTest);
   }))
-
-
-
 
 });
 
