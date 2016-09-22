@@ -272,84 +272,104 @@ angular.module('starter.controllers', [])
 		};
 })
 
-.controller('CoverCtrl', function($scope, ionicDatePicker, ionicTimePicker) {
-		$scope.shiftData = {};
-		$scope.$on('$ionicView.enter', function() {
-				// Code you want executed every time view is opened
-				$scope.openDatePicker();
-				console.log('Opened!')
-		})
-		var ipObj1 = {
-				callback: function(val) { //Mandatory
-						$scope.shiftData.shift_start = new Date(val);
-						console.log("shiftData is: ", $scope.shiftData);
-						console.log('Return value from the datepicker popup is : ' + val, new Date(val));
-						$scope.openTimePicker();
-				},
-				disabledDates: [ //Optional
-						new Date(2016, 2, 16),
-						new Date(2015, 3, 16),
-						new Date(2015, 4, 16),
-						new Date(2015, 5, 16),
-						new Date('Wednesday, August 12, 2015'),
-						new Date("08-16-2016"),
-						new Date(1439676000000)
-				],
-				from: new Date(2012, 1, 1), //Optional
-				to: new Date(2016, 10, 30), //Optional
-				inputDate: new Date(), //Optional
-				mondayFirst: true, //Optional
-				disableWeekdays: [0], //Optional
-				closeOnSelect: false, //Optional
-				templateType: 'popup' //Optional
-		};
-		var ipObj2 = {
-				callback: function(val) { //Mandatory
-						if (typeof(val) === 'undefined') {
-								console.log('Time not selected');
-						} else {
-								var selectedTime = new Date(val * 1000);
-								console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
-						}
-				},
-				inputTime: 50400, //Optional
-				format: 12, //Optional
-				step: 15, //Optional
-				setLabel: 'Set2' //Optional
-		};
+.controller('CoverCtrl', function($scope, $ionicModal, ionicDatePicker, ionicTimePicker){
+  $scope.shiftData = {storeId      : "ChIJPXmIAnW1RIYRRwVbIcKT_Cw"};
+  $scope.$on('$ionicView.enter', function() {
+	   // Code you want executed every time view is opened
+	   $scope.openDatePicker();
+	   console.log('Opened!')
+	})
+	var ipObj1 = {
+      callback: function (val) {  //Mandatory
+      	$scope.shiftData.shift_start = new Date(val);
+        $scope.shiftData.shift_end = new Date(val);
+      	console.log("shiftData is: ", $scope.shiftData);
+        console.log('Return value from the datepicker popup is : ' + val, new Date(val));
+        $scope.openTimePicker1();
+      },
+      disabledDates: [            //Optional
+        new Date(2016, 2, 16),
+        new Date(2015, 3, 16),
+        new Date(2015, 4, 16),
+        new Date(2015, 5, 16),
+        new Date('Wednesday, August 12, 2015'),
+        new Date("08-16-2016"),
+        new Date(1439676000000)
+      ],
+      from: new Date(2012, 1, 1), //Optional
+      to: new Date(2016, 10, 30), //Optional
+      inputDate: new Date(),      //Optional
+      mondayFirst: true,          //Optional
+      disableWeekdays: [0],       //Optional
+      closeOnSelect: false,       //Optional
+      templateType: 'popup'       //Optional
+    };
+  var ipObj2 = {
+    callback: function (val) {      //Mandatory
+      if (typeof (val) === 'undefined') {
+        console.log('Time not selected');
+      } else {
+        var selectedTime = new Date(val * 1000);
+        console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
+      }
+      $scope.prizePicker();
+    },
+    inputTime: 50400,   //Optional
+    format: 12,         //Optional
+    step: 15,           //Optional
+    setLabel: 'Set2'    //Optional
+  };
 
-		var ipObj3 = {
-				callback: function(val) { //Mandatory
-						if (typeof(val) === 'undefined') {
-								console.log('Time not selected');
-						} else {
-								var selectedTime = new Date(val * 1000);
-								console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
-						}
-				},
-				inputTime: 50400, //Optional
-				format: 12, //Optional
-				step: 15, //Optional
-				setLabel: 'Set2' //Optional
-		};
+  var ipObj3 = {
+    callback: function (val) {      //Mandatory
+      if (typeof (val) === 'undefined') {
+        console.log('Time not selected');
+      } else {
+        var selectedTime = new Date(val * 1000);
+        console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
+      }
+      $scope.openTimePicker2();
+    },
+    inputTime: 50400,   //Optional
+    format: 12,         //Optional
+    step: 15,           //Optional
+    setLabel: 'Set2'    //Optional
+  };
 
-		// ionicTimePicker.openTimePicker(ipObj1);
-		$scope.openTimePicker = function() {
-				ionicTimePicker.openTimePicker(ipObj3);
-		};
+  $ionicModal.fromTemplateUrl('templates/prizeModal.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
 
-		// ionicTimePicker.openTimePicker(ipObj1);
-		$scope.openTimePicker = function() {
-				ionicTimePicker.openTimePicker(ipObj2);
-		};
+  // ionicTimePicker.openTimePicker(ipObj1);
+  $scope.openTimePicker1 = function(){
+    ionicTimePicker.openTimePicker(ipObj3);
+  };
 
-		$scope.openDatePicker = function() {
-				ionicDatePicker.openDatePicker(ipObj1);
-		};
+  // ionicTimePicker.openTimePicker(ipObj1);
+  $scope.openTimePicker2 = function(){
+    ionicTimePicker.openTimePicker(ipObj2);
+  };
 
-		$scope.openProzePicker = function() {
+  $scope.openDatePicker = function(){
+    ionicDatePicker.openDatePicker(ipObj1);
+  };
 
-		}
+  $scope.prizePicker = function(){
+    $scope.modal.show();
+  }
+
+  $scope.addPrize = function() {
+    console.log($scope.shiftData);
+    $scope.closePrize();
+  };
+
+  $scope.closePrize = function() {
+    $scope.modal.hide();
+  };
+  var shift = $scope.shiftData;
+  // if(shift.shift_start && shift.shift_end && shift.prize){}
 })
 
 .controller('PickupCtrl', function($scope, AvailableShifts, $location, $state) {
