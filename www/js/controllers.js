@@ -156,6 +156,7 @@ angular.module('starter.controllers', [])
 										shiftObj.end = shift.shift_end;
 										shiftObj.postedby = shift.submitted_by;
 										shiftObj.prize = shift.prize;
+										shiftObj.id = shift._id;
 										AvailableShifts.addShift(shiftObj);
 
 										info += `<li> ${place.name} <br />  ${place.vicinity} </li>
@@ -418,18 +419,36 @@ angular.module('starter.controllers', [])
   // if(shift.shift_start && shift.shift_end && shift.prize){}
 })
 
-.controller('PickupCtrl', function($scope, AvailableShifts, $location, $state) {
+.controller('PickupCtrl', function($scope, AvailableShifts, $location, $state, $http) {
 
 		$scope.availableShifts = AvailableShifts.getShifts();
-		$scope.callFriend = function(friend) {
-				var friendo = 0;
-				if (friend === 111 || friend === 222) {
-						friendo = 1;
-				} else if (friend === 333 || friend === 444) {
-						friendo = 2
-				}
-				window.location = "#/app/friend/" + friendo;
-				console.log("calling friend")
+		var user = 222;
+		$scope.callFriend = function(postedBy, shiftId) {
+			var theData = { 
+				// needs to be user got from the Auth factory
+				user_requested: user.toString(),
+				shift_id: shiftId,
+				shift_owner: postedBy,
+			};
+			user++;
+			var notifyUser = function(){
+
+				//Needs to go to different page
+				window.location = "#/app/friends";
+				console.log("shift requested")
+			}
+
+			$http({
+						method: 'POST',
+						url: 'https://shift-it.herokuapp.com/pickup',
+						data: theData
+				}).then(function successCallback(response) {
+						console.log("got response", response.data)
+						notifyUser();
+				}, function errorCallback(response) {
+						alert("Could not post shift to server, please try again later")
+				});
+
 		}
 
 })
