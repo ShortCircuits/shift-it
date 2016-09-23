@@ -49,11 +49,11 @@ angular.module('starter.services', [])
 
   // profile data
   var profileInfo = {
-    "name": 'Oscar',
-    "phone": '',
-    "email": '',
-    "mainshop": '',
-    "secondaryShop": ''
+      "name": 'Oscar',
+      "email": 'Oscar@gmail.com',
+      "phone": '555-555-5555',
+      "mainshop": '23',
+      "secondaryShop": '44'
   };
 
   return {

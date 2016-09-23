@@ -4,6 +4,9 @@ angular.module('starter.controllers', [])
 
 .controller('FriendsCtrl', function($scope, Friends) {
 		$scope.friends = Friends.all();
+		$scope.name = "jimmy";
+
+		$scope.obj1 = {"name": "joe"};
 })
 
 .controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
@@ -11,7 +14,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('AccountCtrl', function($scope) {
-
 })
 
 .controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout, AvailableShifts, $ionicLoading) {
