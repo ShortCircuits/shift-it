@@ -326,7 +326,7 @@ angular.module('starter.controllers', [])
       	console.log("shiftData is: ", $scope.shiftData);
         console.log('Return value from the datepicker popup is : ' + val, new Date(val));
         $scope.openTimePicker1();
-        $scope.shiftDate = $scope.shiftData.shift_start.getUTCDate() + " " + monthNames[$scope.shiftData.shift_start.getUTCMonth()] + " " + $scope.shiftData.shift_start.getUTCFullYear()
+        $scope.shiftDate = "Date: " + $scope.shiftData.shift_start.getUTCDate() + " " + monthNames[$scope.shiftData.shift_start.getUTCMonth()] + " " + $scope.shiftData.shift_start.getUTCFullYear()
 
         // var month = dateObj.getUTCMonth() + 1; //months from 1-12
         // var day = dateObj.getUTCDate();
@@ -374,7 +374,7 @@ angular.module('starter.controllers', [])
         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
       }
       $scope.prizePicker();
-      $scope.endTime = selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes());
+      $scope.endTime = "Start Time: " + selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes());
     },
     inputTime: 50400,   //Optional
     format: 12,         //Optional
@@ -397,7 +397,7 @@ angular.module('starter.controllers', [])
         console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), 'H :', selectedTime.getUTCMinutes(), 'M');
       }
       $scope.openTimePicker2();
-      $scope.startTime = selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes());
+      $scope.startTime = "End Time: " + selectedTime.getUTCHours() + ":" + convertMinutes(selectedTime.getUTCMinutes());
     },
     inputTime: 50400,   //Optional
     format: 12,         //Optional
