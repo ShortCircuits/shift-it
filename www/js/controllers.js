@@ -22,6 +22,12 @@ angular.module('starter.controllers', [])
 		$scope.infowindow;
 		$scope.location = Maps.getLocation();
 
+		$scope.$on('$ionicView.enter', function() {
+	   // Code you want executed every time view is opened
+	   $scope.cover();
+	   console.log('Opened!')
+	})
+
 		$scope.show = function() {
 	    $ionicLoading.show({
 	      template: '<p>Loading please wait..</p><ion-spinner icon="lines"></ion-spinner>',
@@ -53,9 +59,9 @@ angular.module('starter.controllers', [])
 			// make request to the server too see if there shotul be notification for the user
 			$http({
 						method: 'GET',
-						url: 'https://shift-it.herokuapp.com/pickup'
+						url: 'http://localhost:4000/pickup'
 				}).then(function successCallback(response) {
-						console.log("got response", response.data)
+						console.log("got response", response)
 						// TODO
 						// wishfull programing
 						if(response){
@@ -64,7 +70,6 @@ angular.module('starter.controllers', [])
 							// store data in the factory for view to use
 
 							// relocate the user
-							window.location = "#/app/tab/cover2"
 						}
 				}, function errorCallback(response) {
 						alert("Could not get notifications from server, suprise")
@@ -84,7 +89,7 @@ angular.module('starter.controllers', [])
 				$scope.show($ionicLoading);
 				$http({
 						method: 'GET',
-						url: 'https://shift-it.herokuapp.com/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
+						url: 'http://localhost:4000/shifts/lat/' + $scope.location.lat + '/lng/' + $scope.location.lng + '/rad/5000'
 				}).then(function successCallback(response) {
 						console.log("got response", response.data)
 						callback(response.data)
@@ -314,7 +319,7 @@ angular.module('starter.controllers', [])
 // This controller handles the functionality for creating and posting a new shift.
 .controller('CoverCtrl', function($scope, $ionicModal, ionicDatePicker, ionicTimePicker, $http){
   // change storeId and submitted_by to be dynamically loaded in when that is available.
-  $scope.shiftData = {storeId      : "ChIJPXmIAnW1RIYRRwVbIcKT_Cw", covered: false, submitted_by: 555};
+  $scope.shiftData = {storeId      : "ChIJPXmIAnW1RIYRRwVbIcKT_Cw", covered: false};
   $scope.$on('$ionicView.enter', function() {
 	   // Code you want executed every time view is opened
 	   $scope.openDatePicker();
@@ -455,7 +460,7 @@ angular.module('starter.controllers', [])
   $scope.postShift = function() {
     $http({
       method: 'POST',
-      url: 'https://shift-it.herokuapp.com/shifts',
+      url: 'http://localhost:4000/shifts',
       data: shift
     }).then(function(response){
       console.log("shift submitted to database with shift data: ", shift);
@@ -473,7 +478,6 @@ angular.module('starter.controllers', [])
 		$scope.callFriend = function(postedBy, shiftId) {
 			var theData = { 
 				// needs to be user got from the Auth factory
-				user_requested: user.toString(),
 				shift_id: shiftId,
 				shift_owner: postedBy,
 			};
@@ -487,7 +491,7 @@ angular.module('starter.controllers', [])
 
 			$http({
 						method: 'POST',
-						url: 'https://shift-it.herokuapp.com/pickup',
+						url: 'http://localhost:4000/pickup',
 						data: theData
 				}).then(function successCallback(response) {
 						console.log("got response", response.data)
