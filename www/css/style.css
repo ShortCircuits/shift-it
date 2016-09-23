@@ -10,12 +10,16 @@
     z-index: 9;
 }
 
-.cover {
+/*.cover {
   text-align: center;
+}*/
+
+.card {
+  font-size: 30px;
 }
 
 .confirm {
-  float: bottom;
+  position
 }
 
 .floatingButton {
