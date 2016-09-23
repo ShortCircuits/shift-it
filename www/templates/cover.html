@@ -2,19 +2,15 @@
   <ion-content class="padding cover">
 
     <p class="calendar-title"> {{shiftDate}} </p>
-    <button class="button button-positive" ng-click="openDatePicker()">Pick a Date</button>
-    
     <p class="time-title"> {{startTime}} </p>
-    <button class="button button-positive" ng-click="openTimePicker1()">Start Shift Time</button>
-
     <p class="time-title"> {{endTime}} </p>
-    <button class="button button-positive" ng-click="openTimePicker2()">End Shift Time</button>
-
     <p class="time-title"> {{shiftData.prize}} </p>
-    <button class="button button-positive" ng-click="prizePicker()">Give a Prize</button>
 
-    <p class="time-title"> Post </p>
-    <button class="button button-positive" ng-click="postShift()">Confirm Shift</button>
+    <button class="button button-positive" ng-click="openDatePicker()">Edit Date</button>
+    <button class="button button-positive" ng-click="openTimePicker1()">Edit Start Time</button>
+    <button class="button button-positive" ng-click="openTimePicker2()">Edit End Time</button>
+    <button class="button button-positive" ng-click="prizePicker()">Edit Prize</button><br /><br />
+    <button class="button button-positive confirm" ng-click="postShift()">Confirm Shift</button>
 
   </ion-content>
 </ion-view>
