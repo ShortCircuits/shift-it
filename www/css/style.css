@@ -10,6 +10,14 @@
     z-index: 9;
 }
 
+.cover {
+  text-align: center;
+}
+
+.confirm {
+  float: bottom;
+}
+
 .floatingButton {
 	position: absolute;
 	top:35%;
