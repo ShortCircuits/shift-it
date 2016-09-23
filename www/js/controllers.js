@@ -78,9 +78,9 @@ angular.module('starter.controllers', [])
 						console.log("got response", response)
 						// TODO
 						// wishfull programing
-						if(response.data[0].approved === true){
+						if(response.data[0] && response.data[0].approved === true){
 							document.getElementById("noticeMsg").innerHTML = 'You have a shift approved';
-						}else if(response.data[0].approved === false){
+						}else if(response.data[0] && response.data[0].approved === false){
 							document.getElementById("noticeMsg").innerHTML = 'A shift is waiting your approval';
 						}
 						if(response.data.length > 0){
@@ -193,7 +193,7 @@ angular.module('starter.controllers', [])
 				var loc = place.geometry.location;
 				var icons = ''
 				if (!place.shifts) {
-						icons = '../img/marker-gray.png'
+						icons = 'img/marker-gray.png'
 				}
 				var marker = new google.maps.Marker({
 						position: {
