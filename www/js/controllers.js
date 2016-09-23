@@ -167,7 +167,7 @@ angular.module('starter.controllers', [])
 				var loc = place.geometry.location;
 				var icons = ''
 				if (!place.shifts) {
-						icons = '../img/marker-gray.png'
+						icons = 'img/marker-gray.png'
 				}
 				var marker = new google.maps.Marker({
 						position: {
@@ -465,6 +465,13 @@ angular.module('starter.controllers', [])
 
 		$scope.availableShifts = AvailableShifts.getShifts();
 		var user = 222;
+
+		$scope.doRefresh2 = function() {
+			console.log("refreshing");
+			window.location = "#/app/tab/map"
+		}
+
+
 		$scope.callFriend = function(postedBy, shiftId) {
 			var theData = { 
 				// needs to be user got from the Auth factory
