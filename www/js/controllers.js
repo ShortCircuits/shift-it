@@ -4,6 +4,9 @@ angular.module('starter.controllers', [])
 
 .controller('FriendsCtrl', function($scope, Friends) {
 		$scope.friends = Friends.all();
+		$scope.name = "jimmy";
+
+		$scope.obj1 = {"name": "joe"};
 })
 
 .controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
@@ -11,7 +14,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('AccountCtrl', function($scope) {
-
 })
 
 .controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout, AvailableShifts, $ionicLoading) {
@@ -198,13 +200,15 @@ angular.module('starter.controllers', [])
 										shiftObj.id = shift._id;
 										AvailableShifts.addShift(shiftObj);
 
-										info += `<li> ${place.name} <br />  ${place.vicinity} </li>
-											<li> Shifts available: </li>
-											<li id="listElement"> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
-												<strong> ${shift.shift_start} to ${shift.shift_end}</strong>
-												<span style="color:green">Prize: ${shift.prize}</span>
-												<button onclick="window.location = '#/app/tab/pickup-list'"> Take shift</button>
-											</li>`
+										info += "<li> " + place.name + " <br />  " + place.vicinity + " </li>\n<li> Shifts available: </li>\n<li id=\"listElement\"> <span style=\"font-size:9\"> " + shift.submitted_by + " needs someone to cover a shift</span> <br/>\n<strong> " + shift.shift_start + " to " + shift.shift_end + "</strong>\n<span style=\"color:green\">Prize: " + shift.prize + "</span>\n<button onclick=\"window.location = '#/app/tab/pickup-list'\"> Take shift</button>\n</li>"
+										
+										// `<li> ${place.name} <br />  ${place.vicinity} </li>
+										// 	<li> Shifts available: </li>
+										// 	<li id="listElement"> <span style="font-size:9"> ${shift.submitted_by} needs someone to cover a shift</span> <br/>
+										// 		<strong> ${shift.shift_start} to ${shift.shift_end}</strong>
+										// 		<span style="color:green">Prize: ${shift.prize}</span>
+										// 		<button onclick="window.location = '#/app/tab/pickup-list'"> Take shift</button>
+										// 	</li>`
 								});
 						} else {
 								info = "<li>No shifts available for this store</li>"
@@ -212,7 +216,8 @@ angular.module('starter.controllers', [])
 
 						// marker popup window
 						$scope.infowindow.setContent(
-								`<ul>${info}</ul>`
+								"<ul>"+info+"</ul>"
+							//	`<ul>${info}</ul>`
 						);
 						$scope.infowindow.open($scope.map, this);
 				});
