@@ -39,14 +39,14 @@ gulp.task('install', ['git-check'], function() {
 });
 
 // Import at the top of the file
-var karma = require('karma').server;
+// var karma = require('karma').server;
 
 /**
 * Test task, run test once and exit
 */
 gulp.task('test', function(done) {
   var config = {
-    configFile: __dirname + '/tests/my.conf.js',
+    configFile: __dirname + '/tests/karma.conf.js',
     singleRun: true,
     autoWatch: false
   };
