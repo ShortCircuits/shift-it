@@ -15,11 +15,9 @@
 }*/
 
 .card {
-  font-size: 30px;
-}
-
-.confirm {
-  position
+  font-size: 20px;
+  position: relative;
+  top: 5%;
 }
 
 .floatingButton {
