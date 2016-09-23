@@ -21,10 +21,14 @@ angular.module('starter.controllers', [])
 		$scope.map;
 		$scope.infowindow;
 		$scope.location = Maps.getLocation();
+		$scope.user = {
+			message: "Your request for a shift has been approved!",
+			link: "#/app/tab/firends"
+		};
 
 		$scope.$on('$ionicView.enter', function() {
 	   // Code you want executed every time view is opened
-	   $scope.cover();
+	   $scope.notification();
 	   console.log('Opened!')
 	})
 
@@ -53,8 +57,18 @@ angular.module('starter.controllers', [])
 
 		}, 4000)
 
-		// Cover shift page
-		$scope.cover = function() {
+		// Notifications
+		$scope.notification = function() {
+			// Get user Id from server
+			$http({
+						method: 'GET',
+						url: 'http://localhost:4000/whoami'
+				}).then(function successCallback(response) {
+						Maps.setUser = response.data;
+						
+				}, function errorCallback(response) {
+						alert("Could not get user Id from server, suprise")
+				});
 
 			// make request to the server too see if there shotul be notification for the user
 			$http({
@@ -64,7 +78,12 @@ angular.module('starter.controllers', [])
 						console.log("got response", response)
 						// TODO
 						// wishfull programing
-						if(response){
+						if(response.data[0].approved === true){
+							document.getElementById("noticeMsg").innerHTML = 'You have a shift approved';
+						}else if(response.data[0].approved === false){
+							document.getElementById("noticeMsg").innerHTML = 'A shift is waiting your approval';
+						}
+						if(response.data.length > 0){
 							// user has notification
 							document.getElementById("notification").style.display = 'block';
 							// store data in the factory for view to use
@@ -319,7 +338,7 @@ angular.module('starter.controllers', [])
 // This controller handles the functionality for creating and posting a new shift.
 .controller('CoverCtrl', function($scope, $ionicModal, ionicDatePicker, ionicTimePicker, $http){
   // change storeId and submitted_by to be dynamically loaded in when that is available.
-  $scope.shiftData = {storeId      : "ChIJPXmIAnW1RIYRRwVbIcKT_Cw", covered: false};
+  $scope.shiftData = {storeId: "ChIJPXmIAnW1RIYRRwVbIcKT_Cw", covered: false};
   $scope.$on('$ionicView.enter', function() {
 	   // Code you want executed every time view is opened
 	   $scope.openDatePicker();
@@ -474,13 +493,6 @@ angular.module('starter.controllers', [])
 .controller('PickupCtrl', function($scope, AvailableShifts, $location, $state, $http) {
 
 		$scope.availableShifts = AvailableShifts.getShifts();
-		var user = 222;
-
-		$scope.doRefresh2 = function() {
-			console.log("refreshing");
-			window.location = "#/app/tab/map"
-		}
-
 
 		$scope.callFriend = function(postedBy, shiftId) {
 			var theData = { 
@@ -488,7 +500,6 @@ angular.module('starter.controllers', [])
 				shift_id: shiftId,
 				shift_owner: postedBy,
 			};
-			user++;
 			var notifyUser = function(){
 
 				//Needs to go to different page

@@ -28,7 +28,30 @@ angular.module('starter.services', [])
 
   var locations = undefined;
   var map = undefined;
+  // prolly needs to be in the rootscope
+  var user = undefined;
+  var approvedShift = false;
+  var notificationMsg = "";
+
     return {
+      setApproved: function(){
+        approvedShift = true;
+      },
+      getApproved: function(){
+        return approvedShift;
+      },
+      getNotificationMsg: function(){
+        if(!approvedShift){
+          return "Your shift request has been approved"
+        }
+        return notificationMsg
+      },
+      getUser: function(){
+        return user;
+      },
+      setUser: function(leUser){
+        user = leUser;
+      },
       getLocation: function (){
         return locations;
       },
