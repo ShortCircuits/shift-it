@@ -597,12 +597,16 @@ angular.module('starter.controllers', [])
 		console.log("this is the shiftId: ", shiftId);
 		$scope.approve = function() {
 			console.log("this is the shiftId inside the approve: ", shiftId);
+			document.getElementById("noticeMsg").innerHTML = 'A shift is waiting your approval';
+			document.getElementById("approveShift").style.display = "none";
+
 			$http({
 						method: 'PATCH',
 						url: 'http://localhost:4000/pickup',									
 						data: {shift_id: shiftId}
 				}).then(function successCallback(response) {
-					  console.log("aprove return: ", response.data)
+					  console.log("aprove return: ", response.data);
+					  alert("You have successfully approved the shift.");
 
 				}, function errorCallback(response) {
 						alert("Could not aprove the shift", response)
@@ -632,4 +636,18 @@ angular.module('starter.controllers', [])
 			alert("Could not get partner profile.")
 		});
 		
-});
+})
+
+.controller('MyShiftsCtrl', function($scope, $http, Maps) {
+	$scope.shifts
+
+	$http({
+		method: 'GET',
+		url: 'http://localhost:4000/myshifts'
+	}).then(function(data) {
+		$scope.shifts = data.data;
+		console.log("Here are the shifts: ", $scope.shifts);
+	}).catch(function(err) {
+		alert("Could not get your shifts from the server.")
+	})
+})

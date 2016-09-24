@@ -29,6 +29,11 @@
     <ion-nav-view name="tab-cover"></ion-nav-view>
   </ion-tab>
 
+  <!-- My Shifts Tab -->
+  <ion-tab title="My Shifts" icon="icon ion-gear-b" ui-sref="app.tab.myshifts">
+    <ion-nav-view name="tab-myshifts"></ion-nav-view>
+  </ion-tab>
+
 </ion-tabs>
 
 <ion-nav-view name="menuContent"></ion-nav-view>
@@ -45,9 +50,6 @@
         </ion-item>
         <ion-item menu-close href="#/app/profile">
           Profile
-        </ion-item>
-        <ion-item menu-close href="#/app/partner">
-          Shift Partner
         </ion-item>
         <ion-item menu-close ui-sref="app.tab.account">
           Settings
