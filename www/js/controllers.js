@@ -64,6 +64,20 @@ angular.module('starter.controllers', [])
 			window.location = "#/app/tab/pickup-list"
 		}
 
+		window.aprove = function(){
+			$http({
+						method: 'PATCH',
+						url: 'http://localhost:4000/pickup',
+															
+						data: {shift_id: "57e6b0ed1c3a043e94624a87"}
+				}).then(function successCallback(response) {
+					  console.log("aprove return: ", response.data)
+
+				}, function errorCallback(response) {
+						alert("Could not aprove the shift", response)
+				});
+		}
+
 		// sets the store the user works at :: TODO
 		window.setMyStore = function(storeId){
 			console.log(storeId)
