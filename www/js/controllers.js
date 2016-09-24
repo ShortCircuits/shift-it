@@ -106,8 +106,7 @@ angular.module('starter.controllers', [])
 				}).then(function successCallback(response) {
 						Maps.setUser(response.data);
 						console.log("this is me", response.data)
-
-						
+				
 				}, function errorCallback(response) {
 						alert("Could not get user Id from server, suprise")
 				});
@@ -639,7 +638,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MyShiftsCtrl', function($scope, $http, Maps) {
-	$scope.shifts
+	$scope.shifts;
+	$scope.needApproval = Maps.getApprovals();
 
 	$http({
 		method: 'GET',
@@ -647,7 +647,28 @@ angular.module('starter.controllers', [])
 	}).then(function(data) {
 		$scope.shifts = data.data;
 		console.log("Here are the shifts: ", $scope.shifts);
+
+		$scope.needApproval.forEach(function(pshift){
+			$scope.shifts.forEach(function(shift){
+				if(pshift.shift_id===shift._id){
+					pshift.shift = shift;
+				}
+			})
+		})
+		console.log("this is our stuff, ", $scope.needApproval)
+
 	}).catch(function(err) {
 		alert("Could not get your shifts from the server.")
 	})
-})
+});
+
+
+
+
+
+
+
+
+
+
+
