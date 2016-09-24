@@ -32,6 +32,7 @@ angular.module('starter.services', [])
   var user = undefined;
   var approvedShift = false;
   var notificationMsg = "";
+  var userApprovals;
 
     return {
       setApproved: function(){

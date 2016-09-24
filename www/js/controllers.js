@@ -105,6 +105,7 @@ angular.module('starter.controllers', [])
 						url: 'http://localhost:4000/pickup'
 				}).then(function successCallback(response) {
 						console.log("got response", response)
+						Maps.userApprovals = response.data;
 						// TODO
 						// wishfull programing
 						if(response.data[0] && response.data[0].approved === true){
@@ -123,6 +124,10 @@ angular.module('starter.controllers', [])
 						alert("Could not get notifications from server, suprise")
 				});
 				document.getElementById("notification").style.display = 'none';
+		};
+
+		window.approve = function() {
+			window.location = "#/app/partner";
 		};
 
 		$scope.pickupShiftPage = function() {
@@ -570,8 +575,31 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PartnerCtrl', function($scope) {
+.controller('PartnerCtrl', function($scope, $http, Maps) {
 	// possible get request to db to fetch facebook profile data
-		$scope.partnerInfo = {};
-		console.log("partner info from fb");
+		var userId = Maps.userApprovals[0].user_requested;
+		console.log("userId : ", userId);
+		$scope.partnerInfo = {
+			name: "",
+			email: "",
+			phone: "",
+			userRep: "",
+			facebookPic: ""
+		};
+		$http({
+					method: 'GET',
+					url: 'http://localhost:4000/user/id/' + userId,
+		}).then(function (data) {
+			console.log("this is the data: ", data);
+			var data = data.data;
+			$scope.partnerInfo.name = data.firstName + ' ' + data.lastName;
+			$scope.partnerInfo.email = data.email;
+			$scope.partnerInfo.facebookPic = data.profilePicture;
+			$scope.partnerInfo.phone = "555-867-5309";
+			$scope.partnerInfo.userRep = "Awesome!";
+			console.log("partner info : ", $scope.partnerInfo);
+		}).catch(function(err) {
+			alert("Could not get partner profile.")
+		});
+		
 });
