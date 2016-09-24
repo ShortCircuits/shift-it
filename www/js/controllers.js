@@ -586,15 +586,18 @@ angular.module('starter.controllers', [])
   // if(shift.shift_start && shift.shift_end && shift.prize){}
 })
 
-.controller('PickupCtrl', function($scope, AvailableShifts, $location, $state, $http) {
+.controller('PickupCtrl', function($scope, AvailableShifts, $location, $state, $http, Maps) {
 
 		$scope.availableShifts = AvailableShifts.getShifts();
+		$scope.myId =  Maps.getUser();
+		console.log("my ID:", $scope.myId);
 
 		$scope.callFriend = function(postedBy, shiftId) {
 			var theData = { 
 				// needs to be user got from the Auth factory
 				shift_id: shiftId,
 				shift_owner: postedBy,
+				// shift owner gets inserted into restricted array on server side
 			};
 			var notifyUser = function(){
 
@@ -602,19 +605,25 @@ angular.module('starter.controllers', [])
 				window.location = "#/app/friends";
 				console.log("shift requested")
 			}
+			// test if shift owner is claiming their own shift
+			if($scope.myId != postedBy) {
 
-			$http({
-						method: 'POST',
-						url: 'http://localhost:4000/pickup',
-						data: theData
-				}).then(function successCallback(response) {
-						console.log("got response", response.data)
-						notifyUser();
-				}, function errorCallback(response) {
-						alert("Could not post shift to server, please try again later")
-				});
+				$http({
+							method: 'POST',
+							url: 'http://localhost:4000/pickup',
+							data: theData
+					}).then(function successCallback(response) {
+							console.log("got response", response.data)
+							notifyUser();
+					}, function errorCallback(response) {
+							alert("Could not post shift to server, please try again later")
+					});
 
-		}
+			} else {
+				alert("Sorry, you cannot claim this shift.")
+			}
+
+		};
 
 })
 
