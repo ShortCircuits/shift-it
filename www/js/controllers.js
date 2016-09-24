@@ -18,7 +18,8 @@ angular.module('starter.controllers', [])
 
 .controller('MapCtrl', function($scope, $state, $location, $http, $window, Maps, $timeout, AvailableShifts, $ionicLoading) {
 
-		$scope.map;
+		$scope.myStoreInfo = {};
+    $scope.map;
 		$scope.infowindow;
 		$scope.location = Maps.getLocation();
 		$scope.user = {
@@ -65,9 +66,8 @@ angular.module('starter.controllers', [])
 			console.log("window.approve is running here!")
 			$http({
 						method: 'PATCH',
-						url: 'http://localhost:4000/pickup',
-															
-						data: {shift_id: shiftId}
+						url: 'http://localhost:4000/pickup',								
+						data: {shift_id: "57e6b0ed1c3a043e94624a87"}
 				}).then(function successCallback(response) {
 					  console.log("aprove return: ", response.data)
 
@@ -77,8 +77,23 @@ angular.module('starter.controllers', [])
 		}
 
 		// sets the store the user works at :: TODO
-		window.setMyStore = function(storeId){
-			console.log(storeId)
+		window.setMyStore = function(storeId, address){
+      var myStoreObj = {storeId: storeId, address: address}
+			console.log(myStoreObj);
+      var confirmation = confirm("Set your home store as " + address + "?");
+      if (confirmation){
+        $http({
+          method: 'PATCH',
+          url: 'http://localhost:4000/users',
+          data: {home_store: myStoreObj}
+        }).then(function successCallback(response){
+          console.log("home store set as: ", response.data)
+        }, function errorCallback(response) {
+          alert("Please log in to set your home store.")
+        })
+      } else {
+        alert("this should be something other than an alert");
+      }
 		}
 
 		// Notifications
@@ -272,7 +287,7 @@ angular.module('starter.controllers', [])
 
 						// marker popup window
 						$scope.infowindow.setContent(
-								`<ul><li><button onclick="setMyStore('${place.place_id}')">Set this store as my store</button></li>${info}</ul>`
+								`<ul><li><button onclick="setMyStore('${place.place_id}', '${place.vicinity}')">Set this store as my store</button></li>${info}</ul>`
 							//	`<ul>${info}</ul>`
 						);
 						$scope.infowindow.open($scope.map, this);
