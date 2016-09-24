@@ -64,6 +64,12 @@ angular.module('starter.services', [])
       },
       setMap: function(mapObj){
         map = mapObj;
+      },
+      setApprovals: function(shift){
+        userApprovals = shift;
+      },
+      getApprovals: function(){
+        return userApprovals;
       }
     }
 
