@@ -28,8 +28,10 @@ angular.module('starter.controllers', [])
 
 		$scope.$on('$ionicView.enter', function() {
 	   // Code you want executed every time view is opened
-	   $scope.notification();
-	   console.log('Opened!')
+	  	document.getElementById("pickupshift").style.display = 'block';
+			document.getElementById("covermyshift").style.display = 'block';
+	    $scope.notification();
+	    console.log('Opened!')
 	})
 
 		$scope.show = function() {
@@ -57,14 +59,26 @@ angular.module('starter.controllers', [])
 
 		}, 4000)
 
+		// cover is back - hack for manipulating the accepto button destination
+		window.cover = function(){
+			window.location = "#/app/tab/pickup-list"
+		}
+
+		// sets the store the user works at :: TODO
+		window.setMyStore = function(storeId){
+			console.log(storeId)
+		}
+
 		// Notifications
 		$scope.notification = function() {
 			// Get user Id from server
+			
 			$http({
 						method: 'GET',
 						url: 'http://localhost:4000/whoami'
 				}).then(function successCallback(response) {
 						Maps.setUser = response.data;
+						console.log("this is me", response.data)
 						
 				}, function errorCallback(response) {
 						alert("Could not get user Id from server, suprise")
@@ -80,15 +94,15 @@ angular.module('starter.controllers', [])
 						// wishfull programing
 						if(response.data[0] && response.data[0].approved === true){
 							document.getElementById("noticeMsg").innerHTML = 'You have a shift approved';
+							document.getElementById("accepto").setAttribute("onclick", "cover()")
 						}else if(response.data[0] && response.data[0].approved === false){
 							document.getElementById("noticeMsg").innerHTML = 'A shift is waiting your approval';
+							document.getElementById("accepto").setAttribute("onclick", "approve()")
 						}
 						if(response.data.length > 0){
 							// user has notification
 							document.getElementById("notification").style.display = 'block';
-							// store data in the factory for view to use
 
-							// relocate the user
 						}
 				}, function errorCallback(response) {
 						alert("Could not get notifications from server, suprise")
@@ -98,8 +112,8 @@ angular.module('starter.controllers', [])
 
 		$scope.pickupShiftPage = function() {
 				$location = "app.pickup-list"
-
 		};
+
 		// Pickup a shift page
 		$scope.pickup = function() {
 				// $location = "app.tab.pickup"
@@ -240,7 +254,7 @@ angular.module('starter.controllers', [])
 
 						// marker popup window
 						$scope.infowindow.setContent(
-								"<ul>"+info+"</ul>"
+								`<ul><li><button onclick="setMyStore('${place.place_id}')">Set this store as my store</button></li>${info}</ul>`
 							//	`<ul>${info}</ul>`
 						);
 						$scope.infowindow.open($scope.map, this);
