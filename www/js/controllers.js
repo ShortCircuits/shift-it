@@ -61,12 +61,13 @@ angular.module('starter.controllers', [])
 			window.location = "#/app/tab/pickup-list"
 		}
 
-		window.aprove = function(){
+		window.approve = function(shiftId){
+			console.log("window.approve is running here!")
 			$http({
 						method: 'PATCH',
 						url: 'http://localhost:4000/pickup',
 															
-						data: {shift_id: "57e6b0ed1c3a043e94624a87"}
+						data: {shift_id: shiftId}
 				}).then(function successCallback(response) {
 					  console.log("aprove return: ", response.data)
 
@@ -102,7 +103,7 @@ angular.module('starter.controllers', [])
 						url: 'http://localhost:4000/pickup'
 				}).then(function successCallback(response) {
 						console.log("got response", response)
-						Maps.userApprovals = response.data;
+						Maps.setApprovals(response.data);
 						// TODO
 						// wishfull programing
 						if(response.data[0] && response.data[0].approved === true){
@@ -574,14 +575,31 @@ angular.module('starter.controllers', [])
 
 .controller('PartnerCtrl', function($scope, $http, Maps) {
 	// possible get request to db to fetch facebook profile data
-		var userId = Maps.userApprovals[0].user_requested;
+		var data = Maps.getApprovals();
+		var userId = data[0].user_requested;
+		var shiftId = data[0].shift_id;
 		console.log("userId : ", userId);
+		console.log("this is the shiftId: ", shiftId);
+		$scope.approve = function() {
+			console.log("this is the shiftId inside the approve: ", shiftId);
+			$http({
+						method: 'PATCH',
+						url: 'http://localhost:4000/pickup',									
+						data: {shift_id: shiftId}
+				}).then(function successCallback(response) {
+					  console.log("aprove return: ", response.data)
+
+				}, function errorCallback(response) {
+						alert("Could not aprove the shift", response)
+				});
+		};
 		$scope.partnerInfo = {
 			name: "",
 			email: "",
 			phone: "",
 			userRep: "",
-			facebookPic: ""
+			facebookPic: "",
+			shiftId: shiftId
 		};
 		$http({
 					method: 'GET',
