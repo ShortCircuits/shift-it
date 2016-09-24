@@ -186,6 +186,16 @@ angular.module('starter', ['ionic', 'satellizer', 'ionic-datepicker', 'ionic-tim
     }
   })
 
+  .state('app.tab.myshifts', {
+    url: '/myshifts',
+    views: {
+      'tab-myshifts': {
+        templateUrl: 'templates/myshifts.html',
+        controller: 'MyShiftsCtrl'
+      }
+    }
+  })
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('app/tab/map');
