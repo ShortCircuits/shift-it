@@ -338,53 +338,33 @@ angular.module('starter.controllers', [])
 .controller('ProfileCtrl', function($scope, $http, $ionicModal, Profile, Maps) {
 
 	$scope.profileData = {};
-  // if(!Maps.getUser()){
-
-  // }
 
 	$scope.$on('$ionicView.enter', function() {
     console.log("My user data is: ", Maps.getUser());
 
-    $http({
-            method: 'GET',
-            url: 'http://localhost:4000/whoami'
-        }).then(function successCallback(response) {
-            Maps.setUser = response.data;
-            console.log("user in the Profile controller: ", Maps.getUser());
-            console.log("this is me", response.data);
-        }, function errorCallback(response) {
-            alert("Could not get user Id from server, suprise")
-        });
-	  // Code you want executed every time view is opened
-	  $http({
-	  	method: 'GET',
-	  	url: 'http://localhost:4000/getProfileInfo'
-	  }).then(function successCallback(response){
-	  	$scope.profileData = response[0];
-	  }, function errorCallback(response){
-	  	// redirect to login page if user tries to reach profile page when not logged in
-	  });
+    if (!Maps.getUser()) {
+    	// Need to decide -- how to handle not-logged-in
+    	alert("Not logged in, friend!");
+    } else {
+		  // Code you want executed every time view is opened
+		  $http({
+		  	method: 'GET',
+		  	url: 'http://localhost:4000/getProfileInfo'
+		  }).then(function successCallback(response){
+		  	console.log("===============ProfCtrl response.data: ", response.data);
+	  	
+		  	$scope.profileData = response.data[0];
+		  }, function errorCallback(response){
+		  	// redirect to login page if user tries to reach profile page when not logged in
+		  });
+    }
 
-	});
+    // Functionality for editProfile modal
+    $scope.submitProfile = function(changeObject){
 
-		// Form data for the login modal
-				// "name": "Alice Bobinsky",
-				// "email": "alice@gmail.com",
-				// "phone": "(512) 123-4567",
-				// "home_store": "nearest"
+    }
 
- //  firstName: String,
- //  lastName: String,
- //  email: {type: String, unique:true},
- //  phone: String,
- //  profilePicture: String,
- //  home_store: String,
- //  rating: Number,
- //  profiles: {facebook: String},
-
-
-
-		// Create the login modal that we will use later
+    // Open and close the modal to edit Profile
 		$ionicModal.fromTemplateUrl('templates/editProfile.html', {
 				scope: $scope
 		}).then(function(modal) {
@@ -401,7 +381,7 @@ angular.module('starter.controllers', [])
 				$scope.modal.show();
 		};
 
-
+	})
 })
 
 // This controller handles the functionality for creating and posting a new shift.
