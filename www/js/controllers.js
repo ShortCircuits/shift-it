@@ -79,6 +79,7 @@ angular.module('starter.controllers', [])
 				}).then(function successCallback(response) {
 						Maps.setUser(response.data);
 						console.log("this is me", response.data)
+
 						
 				}, function errorCallback(response) {
 						alert("Could not get user Id from server, suprise")
@@ -320,11 +321,26 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ProfileCtrl', function($scope, $http, $ionicModal, Profile) {
+.controller('ProfileCtrl', function($scope, $http, $ionicModal, Profile, Maps) {
 
 	$scope.profileData = {};
+  // if(!Maps.getUser()){
+
+  // }
 
 	$scope.$on('$ionicView.enter', function() {
+    console.log("My user data is: ", Maps.getUser());
+
+    $http({
+            method: 'GET',
+            url: 'http://localhost:4000/whoami'
+        }).then(function successCallback(response) {
+            Maps.setUser = response.data;
+            console.log("user in the Profile controller: ", Maps.getUser());
+            console.log("this is me", response.data);
+        }, function errorCallback(response) {
+            alert("Could not get user Id from server, suprise")
+        });
 	  // Code you want executed every time view is opened
 	  $http({
 	  	method: 'GET',
