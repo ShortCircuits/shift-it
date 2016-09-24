@@ -357,7 +357,6 @@ angular.module('starter.controllers', [])
 	$scope.profileData = {};
 
 	$scope.$on('$ionicView.enter', function() {
-    console.log("My user data is: ", Maps.getUser());
 
     if (!Maps.getUser()) {
     	// Need to decide -- how to handle not-logged-in
@@ -368,17 +367,47 @@ angular.module('starter.controllers', [])
 		  	method: 'GET',
 		  	url: 'http://localhost:4000/getProfileInfo'
 		  }).then(function successCallback(response){
-		  	console.log("===============ProfCtrl response.data: ", response.data);
-	  	
 		  	$scope.profileData = response.data[0];
 		  }, function errorCallback(response){
 		  	// redirect to login page if user tries to reach profile page when not logged in
 		  });
     }
 
-    // Functionality for editProfile modal
-    $scope.submitProfile = function(changeObject){
 
+		$scope.editProfileTempData = {
+			firstName:'',
+			lastName: '',
+			email: '',
+			phone: ''
+		};
+
+		$scope.fillEditTemp = function(){
+			$scope.editProfileTempData.firstName = $scope.profileData.firstName;
+			$scope.editProfileTempData.lastName = $scope.profileData.lastName;
+			$scope.editProfileTempData.email = $scope.profileData.email;
+			$scope.editProfileTempData.phone = $scope.profileData.phone || '';
+		};
+
+		$scope.clearEditTemp = function(){
+			$scope.editProfileTempData.firstName = '';
+			$scope.editProfileTempData.lastName = '';
+			$scope.editProfileTempData.email = '';
+			$scope.editProfileTempData.phone = '';
+		};
+
+    // Functionality for editProfile modal
+    $scope.submitProfile = function(){
+    	$http({
+        method: 'PATCH',
+        url: 'http://localhost:4000/users',
+        data: $scope.editProfileTempData,
+      }).then(function successCallback(response){
+        $scope.profileData = response.data;
+      	$scope.closeEditProfile();
+      }, function errorCallback(response) {
+        alert("Failure to update profile");
+      	$scope.closeEditProfile();
+      })
     }
 
     // Open and close the modal to edit Profile
@@ -390,12 +419,14 @@ angular.module('starter.controllers', [])
 
 		// Triggered in the edit profile modal to close it
 		$scope.closeEditProfile = function() {
-				$scope.modal.hide();
+			$scope.modal.hide();
+			$scope.clearEditTemp();
 		};
 
 		// Open the edit profile modal
 		$scope.openEditProfile = function() {
-				$scope.modal.show();
+			$scope.fillEditTemp();
+			$scope.modal.show();
 		};
 
 	})
