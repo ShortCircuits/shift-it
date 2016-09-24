@@ -306,16 +306,39 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ProfileCtrl', function($scope, $ionicModal, Profile) {
+.controller('ProfileCtrl', function($scope, $http, $ionicModal, Profile) {
+
+	$scope.profileData = {};
+
+	$scope.$on('$ionicView.enter', function() {
+	  // Code you want executed every time view is opened
+	  $http({
+	  	method: 'GET',
+	  	url: 'http://localhost:4000/getProfileInfo'
+	  }).then(function successCallback(response){
+	  	$scope.profileData = response[0];
+	  }, function errorCallback(response){
+	  	// redirect to login page if user tries to reach profile page when not logged in
+	  });
+
+	});
 
 		// Form data for the login modal
-		$scope.profileData = {
 				// "name": "Alice Bobinsky",
 				// "email": "alice@gmail.com",
 				// "phone": "(512) 123-4567",
-				// "mainshop": "nearest",
-				// "secondary": "some other"
-		};
+				// "home_store": "nearest"
+
+ //  firstName: String,
+ //  lastName: String,
+ //  email: {type: String, unique:true},
+ //  phone: String,
+ //  profilePicture: String,
+ //  home_store: String,
+ //  rating: Number,
+ //  profiles: {facebook: String},
+
+
 
 		// Create the login modal that we will use later
 		$ionicModal.fromTemplateUrl('templates/editProfile.html', {
@@ -333,6 +356,8 @@ angular.module('starter.controllers', [])
 		$scope.openEditProfile = function() {
 				$scope.modal.show();
 		};
+
+
 })
 
 // This controller handles the functionality for creating and posting a new shift.
