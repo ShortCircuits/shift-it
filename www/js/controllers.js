@@ -77,7 +77,7 @@ angular.module('starter.controllers', [])
 						method: 'GET',
 						url: 'http://localhost:4000/whoami'
 				}).then(function successCallback(response) {
-						Maps.setUser = response.data;
+						Maps.setUser(response.data);
 						console.log("this is me", response.data)
 						
 				}, function errorCallback(response) {
