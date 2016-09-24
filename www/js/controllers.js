@@ -27,9 +27,6 @@ angular.module('starter.controllers', [])
 		};
 
 		$scope.$on('$ionicView.enter', function() {
-	   // Code you want executed every time view is opened
-	  	document.getElementById("pickupshift").style.display = 'block';
-			document.getElementById("covermyshift").style.display = 'block';
 	    $scope.notification();
 	    console.log('Opened!')
 	})
